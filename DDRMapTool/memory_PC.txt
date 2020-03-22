@@ -1,0 +1,132 @@
+B3 = 3856 #H_act
+C3 = 4320 #V_act
+REAL_HACT = 3840
+REAL_VACT = 4320
+LOGO_VACT = 1080
+ME_VACT = 540
+ROW_NUM = 270
+ROW_NUM2 = 270
+KMC00_start_address = 0
+KMC08_start_address = 0
+KME_start_address = 0
+KMV_star_address = 0
+Tcon_PQ_address = 0
+
+
+
+#KMC_00  (V_act/2+2)*ROUNDUP(ROUNDUP(H_act*data_width/CRP_ration,0)/128,0)*128/8
+C6 = 30   #data_width
+D6 = B3     #H
+E6 = C3/2+2 #V
+F6 = 2  # CPR ratio
+KMC_00_LineOffset_PC_CPR = DEC2HEX(ROUNDUP(ROUNDUP(D6*C6/F6,0)/128,0)*128/8)
+KMC_00_MC_HF_PC_CPR = DEC2HEX((HEX2DEC(KMC_00_LineOffset_PC_CPR) * E6))
+
+reg_kmc_00_start_address0 = KMC00_start_address
+reg_kmc_00_start_address1 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address0) + HEX2DEC(KMC_00_MC_HF_PC_CPR))
+reg_kmc_00_start_address2 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address1) + HEX2DEC(KMC_00_MC_HF_PC_CPR))
+reg_kmc_00_start_address3 = reg_kmc_00_start_address2
+reg_kmc_00_start_address4 = reg_kmc_00_start_address3
+reg_kmc_00_start_address5 = reg_kmc_00_start_address4
+reg_kmc_00_start_address6 = reg_kmc_00_start_address5
+reg_kmc_00_start_address7 = reg_kmc_00_start_address6
+
+reg_kmc_00_end_address0 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address0) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address1 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address1) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address2 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address2) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address3 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address3) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address4 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address4) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address5 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address5) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address6 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address6) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_00_end_address7 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address7) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+
+reg_kmc_00_lr_offset_addr = DEC2HEX(HEX2DEC(KMC_00_MC_HF_PC_CPR)/2)
+reg_kmc_00_line_offset_addr = KMC_00_LineOffset_PC_CPR
+reg_kmc_00_mode = 1
+
+#KMC_01  (V_act/2+2)*ROUNDUP(ROUNDUP(H_act*data_width/CRP_ration,0)/128,0)*128/8
+B3 = 3856 #H_act
+C3 = 4320 #V_act
+C7 = 30   #data_width
+D7 = B3      #H
+E7 = C3/2+2  #V
+F7 = 2  # CPR ratio
+KMC_01_LineOffset_PC_CPR = DEC2HEX(ROUNDUP(ROUNDUP(D7*C7/F7,0)/128,0)*128/8)
+KMC_01_MC_LF_PC_CPR = DEC2HEX((HEX2DEC(KMC_01_LineOffset_PC_CPR) * E7))
+
+reg_kmc_01_start_address0 = KMC00_start_address
+reg_kmc_01_start_address1 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address0) + HEX2DEC(KMC_01_MC_LF_PC_CPR))
+reg_kmc_01_start_address2 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address1) + HEX2DEC(KMC_01_MC_LF_PC_CPR))
+reg_kmc_01_start_address3 = reg_kmc_01_start_address2
+reg_kmc_01_start_address4 = reg_kmc_01_start_address3
+reg_kmc_01_start_address5 = reg_kmc_01_start_address4
+reg_kmc_01_start_address6 = reg_kmc_01_start_address5
+reg_kmc_01_start_address7 = reg_kmc_01_start_address6
+
+reg_kmc_01_end_address0 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address0) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address1 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address1) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address2 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address2) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address3 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address3) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address4 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address4) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address5 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address5) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address6 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address6) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_01_end_address7 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address7) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+
+reg_kmc_01_lr_offset_addr = DEC2HEX(HEX2DEC(KMC_01_MC_LF_PC_CPR)/2)
+reg_kmc_01_line_offset_addr = KMC_01_LineOffset_PC_CPR
+reg_kmc_01_mode = 1
+
+#KMC_08
+reg_kmc_08_start_address0 = KMC08_start_address
+reg_kmc_08_start_address1 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address0) + HEX2DEC(KMC_00_MC_HF_PC_CPR))
+reg_kmc_08_start_address2 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address1) + HEX2DEC(KMC_00_MC_HF_PC_CPR))
+reg_kmc_08_start_address3 = reg_kmc_08_start_address2
+reg_kmc_08_start_address4 = reg_kmc_08_start_address3
+reg_kmc_08_start_address5 = reg_kmc_08_start_address4
+reg_kmc_08_start_address6 = reg_kmc_08_start_address5
+reg_kmc_08_start_address7 = reg_kmc_08_start_address6
+         
+reg_kmc_08_end_address0 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address0) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address1 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address1) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address2 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address2) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address3 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address3) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address4 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address4) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address5 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address5) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address6 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address6) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+reg_kmc_08_end_address7 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address7) + HEX2DEC(KMC_00_LineOffset_PC_CP)*REAL_VACT/2)
+
+reg_kmc_08_lr_offset_addr = DEC2HEX(HEX2DEC(KMC_00_MC_HF_PC_CPR)/2)
+reg_kmc_08_line_offset_addr = KMC_00_LineOffset_PC_CPR
+reg_kmc_08_mode = 1
+
+#KMC_09
+reg_kmc_09_start_address0 = KMC08_start_address
+reg_kmc_09_start_address1 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address0) + HEX2DEC(KMC_01_MC_LF_PC_CPR))
+reg_kmc_09_start_address2 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address1) + HEX2DEC(KMC_01_MC_LF_PC_CPR))
+reg_kmc_09_start_address3 = reg_kmc_01_start_address2
+reg_kmc_09_start_address4 = reg_kmc_01_start_address3
+reg_kmc_09_start_address5 = reg_kmc_01_start_address4
+reg_kmc_09_start_address6 = reg_kmc_01_start_address5
+reg_kmc_09_start_address7 = reg_kmc_01_start_address6
+         
+reg_kmc_09_end_address0 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address0) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address1 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address1) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address2 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address2) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address3 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address3) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address4 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address4) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address5 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address5) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address6 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address6) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+reg_kmc_09_end_address7 = DEC2HEX(HEX2DEC(reg_kmc_09_start_address7) + HEX2DEC(KMC_01_LineOffset_PC_CPR)*REAL_VACT/2)
+         
+reg_kmc_09_lr_offset_addr = DEC2HEX(HEX2DEC(KMC_01_MC_LF_PC_CPR)/2)
+reg_kmc_09_line_offset_addr = KMC_01_LineOffset_PC_CPR
+reg_kmc_09_mode = 1
+
+
+
+
+
+
+
+
+
