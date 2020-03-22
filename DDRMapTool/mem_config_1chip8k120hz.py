@@ -46,18 +46,26 @@ class MemConfig_1Chip8K120Hz(MemConfig):
 
         self._mm.add_agent(mem_agents.MemAgent_KMV_01(0.32, 42.63))             # ME2_Loop_PH_W
         self._mm.add_agent(mem_agents.MemAgent_RO('KMV_07', 4.05, 'KMV_01'))    # ME2_Loop_PH_R
-
-        """
+        
         self._mm.add_agent(mem_agents.MemAgent_KMV_02(0.62, 81))                # ME1_Loop_PPI_W
         self._mm.add_agent(mem_agents.MemAgent_RO('KMV_03', 81, 'KMV_02'))      # ME1_Loop_PPI_R
-
+        
         self._mm.add_agent(mem_agents.MemAgent_KMV_04(1.53, 66.83))             # ME1_VBUF_PPFV_W
         self._mm.add_agent(mem_agents.MemAgent_RO('KMV_08', 66.83, 'KMV_04'))   # ME1_VBUF_PPFV_R
-        self._mm.add_agent(mem_agents.MemAgent_RO('KMV_09', 129.60, 'KMV_04'))   # ME1_VBUF_PFVPI_R
-
+        self._mm.add_agent(mem_agents.MemAgent_RO('KMV_09', 129.60, 'KMV_04'))  # ME1_VBUF_PFVPI_R
+                
         self._mm.add_agent(mem_agents.MemAgent_KMV_05(1.98, 129.60))             # ME1_Loop_PFVPI_W
-        self._mm.add_agent(mem_agents.MemAgent_RO('KMV_06', 129.60, 'KMV_05'))   # ME1_Loop_PFVPI_R
-        """
+        self._mm.add_agent(mem_agents.MemAgent_RO('KMV_06', 129.60, 'KMV_05'))   # ME1_Loop_PFVPI_R        
+
+        self._mm.add_agent(mem_agents.MemAgent_OD_W(4.07, 533.52))               # TOP_OD_W_L
+        self._mm.add_agent(mem_agents.MemAgent_RO('OD_R', 129.60, 'OD_W'))       # TOP_OD_R_L
+
+        self._mm.add_agent(mem_agents.MemAgent_TOP_DEMURA_R(5.58, 729.76))       # TOP_DEMURA_R
+
+        self._mm.add_agent(mem_agents.MemAgent_BOT_OD_W(0, 0))                   # BOT_OD_W
+        self._mm.add_agent(mem_agents.MemAgent_RO('BOT_OD_R', 0, 'BOT_OD_W'))    # TOP_OD_R_L
+
+        self._mm.add_agent(mem_agents.MemAgent_BOT_DEMURA_R(0, 0))               # BOT_DEMURA_R
 
     def place_memory(self):
 
@@ -78,4 +86,16 @@ class MemConfig_1Chip8K120Hz(MemConfig):
 
         self._mm.get_agent('KMV_01').start_addr = 0x04000000
         self._mm.get_agent('KMV_01').ddr_tag = DDRTag.DDR1
+        self._mm.get_agent('KMV_02').ddr_tag = DDRTag.DDR1
+        self._mm.get_agent('KMV_04').ddr_tag = DDRTag.DDR1
+        self._mm.get_agent('KMV_05').ddr_tag = DDRTag.DDR1
+
+        self._mm.get_agent('OD_W').start_addr = 0x05000000
+        self._mm.get_agent('OD_W').ddr_tag = DDRTag.DDR2 #TODO TOP_OD_L or TOP_OD_W, DDR?
+
+        self._mm.get_agent('TOP_DEMURA_R').ddr_tag = DDRTag.DDR2
+
+        self._mm.get_agent('BOT_OD_W').ddr_tag = DDRTag.DDR2
+
+        self._mm.get_agent('BOT_DEMURA_R').ddr_tag = DDRTag.DDR2
         

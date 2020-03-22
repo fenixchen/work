@@ -32,6 +32,7 @@ class MemManager:
                 if agent.ddr_tag.value != i:
                     continue
                 regs = agent.get_regs(reg_dict)
+                
                 assert agent.start_addr is not None
                 
                 reg_dict['%s_start_addr' % agent.name] = agent.start_addr
