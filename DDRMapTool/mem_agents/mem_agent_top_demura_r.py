@@ -26,12 +26,13 @@ class MemAgent_TOP_DEMURA_R(MemAgent):
         TOP_DEMURA = DEC2HEX((HEX2DEC(G22) * E22))
 
         reg_dict['TOP_DEMURA'] = TOP_DEMURA
-        reg_ptc_00_start_address0 = reg_dict['reg_ptc_00_start_address0']
+        reg_ptc_00_start_address0 = reg_dict['reg_ptc_00_start_address0']        
         TOP_OD = reg_dict['TOP_OD']
 
-        reg_ptc_02_start_address0 = DEC2HEX(HEX2DEC(reg_ptc_00_start_address0)+HEX2DEC(TOP_OD))
+        reg_ptc_02_start_address0 = DEC2HEX(HEX2DEC(reg_ptc_00_start_address0)+HEX2DEC(TOP_OD))        
         
         reg_ptc_04_start_address0 = DEC2HEX(HEX2DEC(reg_ptc_00_start_address0)+HEX2DEC(TOP_OD))
+        self._start_addr = reg_ptc_04_start_address0
 
         self._reg_ptc_04_start_address0.value = reg_ptc_04_start_address0
         reg_dict['reg_ptc_04_start_address0'] = reg_ptc_04_start_address0

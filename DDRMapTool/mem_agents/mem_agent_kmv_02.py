@@ -29,6 +29,8 @@ class MemAgent_KMV_02(MemAgent):
 
         reg_mv02_start_address0 = DEC2HEX(HEX2DEC(reg_mv01_start_address0)+HEX2DEC(KMV_00_MV))
         reg_dict['reg_mv02_start_address0'] = reg_mv02_start_address0
+        self._start_addr = reg_mv02_start_address0
+        
         reg_mv02_end_address0 = DEC2HEX(HEX2DEC(reg_mv02_start_address0)+HEX2DEC(KMV_02_Line_Offset)*ROW_NUM)
         reg_mv02_line_offset_addr = KMV_02_Line_Offset
         reg_mv02_lr_offset_addr = DEC2HEX(HEX2DEC(KMV_02_MV)/2)
@@ -37,8 +39,7 @@ class MemAgent_KMV_02(MemAgent):
         self._reg_mv02_end_address0.value = reg_mv02_end_address0
         self._reg_mv02_line_offset_addr.value = reg_mv02_line_offset_addr
         self._reg_mv02_mode.value = 1
-        
-        
+                
         return  [self._reg_mv02_start_address0,
                  self._reg_mv02_end_address0,
                  self._reg_mv02_line_offset_addr,

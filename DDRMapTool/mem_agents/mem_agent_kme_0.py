@@ -35,9 +35,9 @@ class MemAgent_KME_0(MemAgent):
         ME_VACT = 540
         ROW_NUM = 270
         ROW_NUM2 = 270
-        KMC00_start_address = self._start_addr
+        KMC00_start_address = 0
         KMC08_start_address = 0
-        KME_start_address = 0
+        KME_start_address = self._start_addr
         KMV_star_address = 0
         Tcon_PQ_address = 0
 

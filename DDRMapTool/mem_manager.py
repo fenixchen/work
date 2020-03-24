@@ -1,4 +1,4 @@
-from mem_common import DDR_COUNT, pdebug, perror
+from mem_common import DDR_COUNT, p_debug, p_error, p_verbose
 
 
 class MemManager:
@@ -25,7 +25,7 @@ class MemManager:
         all_regs = []
         for i in range(DDR_COUNT):
             reg_dict = {}
-            print('>>> DDR%s' % (i + 1))
+            p_verbose('>>> DDR%s' % (i + 1))
             start_addr = 0
             bandwidth = 0
             for agent in self._agent_list:
@@ -40,10 +40,10 @@ class MemManager:
 
                 start_addr += agent.size_k
                 bandwidth += agent.bandwidth_m
-                pdebug("+ %8s(%.2fM) => %.2fM" % (agent.name, agent.size_m, start_addr))
+                p_verbose("+ %8s(%.2fM) => %.2fM" % (agent.name, agent.size_m, start_addr))
                 for reg in regs:
-                    print(reg)
-            pdebug('Total, Size:%.2fM, Bandwidth:%.2fM\n' % (start_addr, bandwidth))
+                    p_verbose(reg)
+            p_verbose('Total, Size:%.2fM, Bandwidth:%.2fM\n' % (start_addr, bandwidth))
             if start_addr > 256 * 1024:
-                perror('DDR %d overflow' % i)
+                p_error('DDR %d overflow' % i)
         return all_regs

@@ -61,4 +61,4 @@ class MemAgent:
         return NotImplementedError()
 
     def __str__(self):
-        return "name:%s, ddr_tag:%s" % (self._name, self._ddr_tag.name)
+        return "name:%s, ddr_tag:%s, start_addr:0x%08X, size:%.2fM" % (self._name, self._ddr_tag.name, self._start_addr, self.size_m)

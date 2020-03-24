@@ -1,5 +1,5 @@
 from mem_manager import MemManager
-from mem_common import DDR_COUNT, DDROp
+from mem_common import DDR_COUNT, DDROp, DDRTag, p_debug
 import mem_agents
 
 class MemConfig:
@@ -42,3 +42,24 @@ class MemConfig:
             agents.sort(key=lambda agent: agent.start_addr)
             mapping[i] = agents
         return mapping
+
+    def print_mapping(self):
+        p_debug("DDR Memory Map for <%s>" % self._name)
+        mapping = self.get_ddr_mapping()
+        p_debug(">>> DDR Mapping Result R")
+        for i, agents in enumerate(mapping):
+            p_debug("    %s" % DDRTag(i).name)
+            for agent in agents:
+                if agent.ddr_op == DDROp.W:
+                    continue
+                p_debug("        %-16s, %8.2fM, " % (agent.name, agent.bandwidth_m))          
+
+        p_debug(">>> DDR Mapping Result W")
+        mapping = self.get_ddr_mapping()
+        for i, agents in enumerate(mapping):
+            p_debug("    %s" % DDRTag(i).name)
+            for agent in agents:
+                if agent.ddr_op == DDROp.R:
+                    continue
+                p_debug("        %-16s, start_addr:0x%08X, size:%8.2fM, bandwidth:%8.2fM" % (agent.name, agent.start_addr, agent.size_m, agent.bandwidth_m))      
+                                  

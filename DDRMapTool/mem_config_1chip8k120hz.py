@@ -99,3 +99,11 @@ class MemConfig_1Chip8K120Hz(MemConfig):
 
         self._mm.get_agent('BOT_DEMURA_R').ddr_tag = DDRTag.DDR2
         
+
+def main():
+    config = MemConfig_1Chip8K120Hz()
+    regs = config.generate_registers()
+    config.print_mapping()
+    
+if __name__ == '__main__':
+    main()

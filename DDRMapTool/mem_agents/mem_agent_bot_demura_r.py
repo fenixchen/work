@@ -23,6 +23,7 @@ class MemAgent_BOT_DEMURA_R(MemAgent):
         TOP_OD = reg_dict['TOP_OD']
 
         reg_ptc_05_start_address0 = DEC2HEX(HEX2DEC(reg_kod_wdma_00_start_address3)+HEX2DEC(TOP_OD))    
+        self._start_addr = reg_ptc_05_start_address0
 
         self._reg_ptc_05_start_address0.value = reg_ptc_05_start_address0
 
