@@ -1,24 +1,24 @@
 from mem_common import HEX2DEC, RegType, DEC2HEX, ROUNDUP, DDROp
 from mem_reg import MemReg
-
+from mem_global_var import *
 from mem_agents.mem_agent import MemAgent
 
 
 class MemAgent_KMC_8(MemAgent):
     # pylint: disable=invalid-name
-    def __init__(self, mem_size, bandwidth):
-        super().__init__('KMC_8', mem_size, bandwidth, DDROp.W)
+    def __init__(self):
+        super().__init__('KMC_8', 'IP_R_MC_HF_ENC_YC', DDROp.W)
         # from  reg_kmc_08_start_address0 to reg_kmc_08_start_address7
         self._reg_kmc_08_start_address = [None] * 8
         for i in range(8):
             name = 'reg_kmc_08_start_address%d' % i
-            addr = name # same here, find in global register map later
+            addr = name  # same here, find in global register map later
             self._reg_kmc_08_start_address[i] = MemReg(name, addr, RegType.START)
 
         self._reg_kmc_08_end_address = [None] * 8
         for i in range(8):
             name = 'reg_kmc_08_end_address%d' % i
-            addr = name # same here, find in global register map later
+            addr = name  # same here, find in global register map later
             self._reg_kmc_08_end_address[i] = MemReg(name, addr, RegType.END)
 
         self._reg_kmc_08_line_offset_addr = MemReg('reg_kmc_08_line_offset_addr', 'reg_kmc_08_line_offset_addr', RegType.OTHER)
@@ -26,10 +26,21 @@ class MemAgent_KMC_8(MemAgent):
         self._reg_kmc_08_mode = MemReg('reg_kmc_08_mode', 'reg_kmc_08_mode', RegType.OTHER)
         self._reg_kmc_08_mode.value = 1
 
+    def calc_memory(self):
+        KMC_0_frame_rate = MC_H_in_framerate
+        KMC_0_bits = MC_H_bits
+        KMC_0_H_res = MC_H_Hact/2+MC_H_Hoverlap
+        KMC_0_V_res = MC_H_Vtotal/2
+        KMC_0_VDE_res = MC_H_Vact/2
+        KMC_0_CPR_ratio = MC_H_CPR_ratio
+        KMC_0_Bandwidth = KMC_0_frame_rate*KMC_0_bits*KMC_0_H_res*KMC_0_V_res/KMC_0_CPR_ratio/8/1000/1000
+        KMC_0_DDR_size = KMC_0_bits*KMC_0_H_res*KMC_0_VDE_res/KMC_0_CPR_ratio/8/1024/1024*MC_H_buff_num
+        return KMC_0_DDR_size, KMC_0_Bandwidth
+
     def get_regs(self, reg_dict):
 
-        B3 = 3856 #H_act
-        C3 = 4320 #V_act
+        B3 = 3856  # H_act
+        C3 = 4320  # V_act
         REAL_HACT = 3840
         REAL_VACT = 4320
         LOGO_VACT = 1080
@@ -37,16 +48,15 @@ class MemAgent_KMC_8(MemAgent):
         ROW_NUM = 270
         ROW_NUM2 = 270
         KMC00_start_address = 0
-        KMC08_start_address = self._start_addr
+        KMC08_start_address = self.start_addr
         KME_start_address = 0
         KMV_star_address = 0
         Tcon_PQ_address = 0
 
-
         #kmc_08  (V_act/2+2)*ROUNDUP(ROUNDUP(H_act*data_width/CRP_ration,0)/128,0)*128/8
-        C6 = 22   #data_width
-        D6 = B3     #H
-        E6 = C3/2+2 #V
+        C6 = 22  # data_width
+        D6 = B3  # H
+        E6 = C3/2+2  # V
         F6 = 2.2  # CPR ratio
         kmc_08_LineOffset_VD = DEC2HEX(ROUNDUP(ROUNDUP(D6 * C6 / F6, 0) / 128, 0)*128/8)
         kmc_08_MC_HF_VD_CPR = DEC2HEX((HEX2DEC(kmc_08_LineOffset_VD) * E6))
@@ -59,7 +69,6 @@ class MemAgent_KMC_8(MemAgent):
         reg_kmc_08_start_address5 = reg_kmc_08_start_address4
         reg_kmc_08_start_address6 = reg_kmc_08_start_address5
         reg_kmc_08_start_address7 = reg_kmc_08_start_address6
-
 
         reg_kmc_08_end_address0 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address0) + HEX2DEC(kmc_08_LineOffset_VD)*REAL_VACT/2)
         reg_kmc_08_end_address1 = DEC2HEX(HEX2DEC(reg_kmc_08_start_address1) + HEX2DEC(kmc_08_LineOffset_VD)*REAL_VACT/2)
@@ -103,4 +112,6 @@ class MemAgent_KMC_8(MemAgent):
         reg_dict['reg_kmc_08_start_address7'] = reg_kmc_08_start_address7
         reg_dict['kmc_08_MC_HF_VD_CPR'] = kmc_08_MC_HF_VD_CPR
 
-        return  regs
+        self.start_addr = reg_kmc_08_start_address7
+        self.end_addr = reg_kmc_08_end_address7
+        return regs

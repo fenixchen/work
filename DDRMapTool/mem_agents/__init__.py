@@ -13,6 +13,9 @@ from mem_agents.mem_agent_kmv_02 import MemAgent_KMV_02
 from mem_agents.mem_agent_kmv_04 import MemAgent_KMV_04
 from mem_agents.mem_agent_kmv_05 import MemAgent_KMV_05
 from mem_agents.mem_agent_od_w import MemAgent_OD_W
+from mem_agents.mem_agent_top_od_w import MemAgent_TOP_OD_W
 from mem_agents.mem_agent_top_demura_r import MemAgent_TOP_DEMURA_R
 from mem_agents.mem_agent_bot_od_w import MemAgent_BOT_OD_W
 from mem_agents.mem_agent_bot_demura_r import MemAgent_BOT_DEMURA_R
+from mem_agents.mem_agent_gfx import MemAgent_GFX, GFXType
+from mem_agents.mem_agent_video_in import MemAgent_VIDEO_IN, VideoInType

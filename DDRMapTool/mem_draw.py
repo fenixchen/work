@@ -55,13 +55,14 @@ class MemDraw:
         fig = plt.figure()        
         mapping = config.get_ddr_mapping()
         self._colors = self._get_cmap(mapping)
+        
+        config.print_mapping()
 
         agent_index = 0
         for agents in mapping:
             for agent in agents:                 
                 if agent.ddr_op == DDROp.R:
-                    continue
-                print(agent)
+                    continue                
                 self._plot_agent(agent, agent_index)
                 agent_index += 1
 

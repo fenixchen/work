@@ -1,14 +1,39 @@
 import math
-from mem_common import DDRTag, DDROp, ddr_base_addr
+from mem_common import *
+
 
 class MemAgent:
-    def __init__(self, name, mem_size, bandwidth, op):
+    def __init__(self, name, module_name, op):
         self._name = name
+        self._module_name = module_name
         self._op = op
         self._ddr_tag = DDRTag.NONE
+        mem_size, bandwidth = self.calc_memory()
         self._mem_size = math.ceil(mem_size * 1024)
-        self._bandwidth = math.ceil(bandwidth  * 1024)
-        self._start_addr = 0
+        self._bandwidth = math.ceil(bandwidth * 1024)
+        self._start_addr = None
+        self._end_addr = None
+        self._block = None
+
+    def calc_memory(self):
+        raise NotImplementedError()
+
+    @property
+    def block(self):
+        return self._block
+
+    @block.setter
+    def block(self, value):
+        self._block = value
+
+    @property
+    def block_name(self):
+        assert self._block is not None
+        return self._block.name
+
+    @property
+    def module_name(self):
+        return self._module_name
 
     @property
     def absolute_addr(self):
@@ -21,6 +46,14 @@ class MemAgent:
     @start_addr.setter
     def start_addr(self, value):
         self._start_addr = value
+
+    @property
+    def end_addr(self):
+        return self._end_addr
+
+    @end_addr.setter
+    def end_addr(self, value):
+        self._end_addr = value
 
     @property
     def ddr_tag(self):
@@ -61,4 +94,5 @@ class MemAgent:
         return NotImplementedError()
 
     def __str__(self):
-        return "name:%s, ddr_tag:%s, start_addr:0x%08X, size:%.2fM" % (self._name, self._ddr_tag.name, self._start_addr, self.size_m)
+        return "name:%s, %s, [0x%08X, 0x%08X], size:%.2fM, bandwidth:%.2fM" % (
+            self._name, self._ddr_tag.name, self._start_addr, self._end_addr, self.size_m, self.bandwidth_m)
