@@ -37,7 +37,7 @@ class MemAgent_KME_0(MemAgent):
         KME_0_DDR_size = KME_0_bits*KME_0_H_res*KME_0_VDE_res/KME_0_CPR_ratio/8/1024/1024*ME_buff_num
         return KME_0_DDR_size, KME_0_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         B3 = 3856  # H_act
         C3 = 4320  # V_act
@@ -98,18 +98,21 @@ class MemAgent_KME_0(MemAgent):
         self._reg_kme_00_end_address[6].value = reg_kme_00_end_address6
         self._reg_kme_00_end_address[7].value = reg_kme_00_end_address7
 
-        regs = self._reg_kme_00_start_address + self._reg_kme_00_end_address
-
         self._reg_kme_00_line_offset_addr.value = reg_kme_00_line_offset_addr
-        regs.append(self._reg_kme_00_line_offset_addr)
-
         self._reg_kme_00_mode.value = reg_kme_00_mode
-        regs.append(self._reg_kme_00_mode)
+
+        regs = self._reg_kme_00_start_address + self._reg_kme_00_end_address
+        for reg in regs:
+            reg.value += self.ddr_base_offset
 
         # save address for KME_08
         reg_dict['reg_kme_00_start_address7'] = reg_kme_00_start_address7
 
-        self.start_addr = reg_kme_00_start_address0
-        self.end_addr = reg_kme_00_end_address7
+        self.set_memory_range(reg_kme_00_start_address0, reg_kme_00_end_address7)
 
+    @property
+    def registers(self):
+        regs = self._reg_kme_00_start_address + self._reg_kme_00_end_address
+        regs.append(self._reg_kme_00_line_offset_addr)
+        regs.append(self._reg_kme_00_mode)
         return regs

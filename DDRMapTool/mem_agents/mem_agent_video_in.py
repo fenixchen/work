@@ -62,6 +62,3 @@ class MemAgent_VIDEO_IN(MemAgent):
             return Video_IN4_W_DDR_size, Video_IN4_W_Bandwidth
         else:
             assert False, "Unknown type"
-
-    def get_regs(self, reg_dict):
-        return []

@@ -26,7 +26,7 @@ class MemAgent_KME_10(MemAgent):
         KME_10_DDR_size = KME_10_bits*KME_10_H_res*KME_10_VDE_res/KME_10_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
         return KME_10_DDR_size, KME_10_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
         # KME_10  1080*ROUNDUP(ROUNDUP(1920*data_width/CRP_ration,0)/128,0)*128/8
         C12 = 4  # data_width
         D12 = 1920  # H
@@ -52,9 +52,14 @@ class MemAgent_KME_10(MemAgent):
         self._reg_kme_10_line_offset_addr.value = reg_kme_10_line_offset_addr
         self._reg_kme_10_mode.value = reg_kme_10_mode
 
-        self.start_addr = reg_kme_10_start_address0
-        self.end_addr = reg_kme_10_start_address0 + KME_10_LOGO_MASK
+        regs = [self._reg_kme_10_start_address0, self._reg_kme_10_start_address1]
+        for reg in regs:
+            reg.value += self.ddr_base_offset
 
+        self.set_memory_range(reg_kme_10_start_address0, reg_kme_10_start_address0 + KME_10_LOGO_MASK)
+
+    @property
+    def registers(self):
         return [self._reg_kme_10_start_address0,
                 self._reg_kme_10_start_address1,
                 self._reg_kme_10_line_offset_addr,

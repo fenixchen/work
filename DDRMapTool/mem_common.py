@@ -5,12 +5,16 @@ import math
 import colorama
 
 DDR_SIZE = 256  # 256M DDR Size
+
+DDR_SIZE_BYTE = 256 * 1024 * 1024
+
 DDR_COUNT = 4
 
 DEBUG_ENABLE = True
 VERBOSE_ENABLE = False
 
 colorama.init()
+
 
 def p_verbose(*args, **kwargs):
     if VERBOSE_ENABLE:
@@ -26,8 +30,16 @@ def p_debug(*args, **kwargs):
         caller = inspect.getframeinfo(inspect.stack()[1][0])
         print(colorama.Fore.GREEN, end='')
         print("[D][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
-        print(*args, **kwargs)          
+        print(*args, **kwargs)
         print(colorama.Style.RESET_ALL, end='')
+
+
+def p_warn(*args, **kwargs):
+    caller = inspect.getframeinfo(inspect.stack()[1][0])
+    print(colorama.Fore.YELLOW, end='')
+    print("[E][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
+    print(*args, **kwargs)
+    print(colorama.Style.RESET_ALL, end='')
 
 
 def p_error(*args, **kwargs):
@@ -38,7 +50,7 @@ def p_error(*args, **kwargs):
     print(colorama.Style.RESET_ALL, end='')
 
 
-def ROUNDUP(val, digit):
+def ROUNDUP(val, digit=0):
     # pylint: disable=invalid-name
     return math.ceil(val)
 
@@ -69,10 +81,6 @@ class DDRTag(Enum):
 class DDROp(Enum):
     R = 0
     W = 1
-
-
-def ddr_base_addr(tag):
-    return tag.value * DDR_SIZE * 1024 * 1024
 
 
 class RegType(Enum):

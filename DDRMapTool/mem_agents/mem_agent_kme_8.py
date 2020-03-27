@@ -26,7 +26,7 @@ class MemAgent_KME_8(MemAgent):
         KME_8_DDR_size = KME_8_bits*KME_8_H_res*KME_8_VDE_res/KME_8_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
         return KME_8_DDR_size, KME_8_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
         C11 = 8  # data_width
         D11 = 1920  # H
         E11 = 1080  # V
@@ -55,12 +55,16 @@ class MemAgent_KME_8(MemAgent):
         self._reg_kme_08_line_offset_addr.value = reg_kme_08_line_offset_addr
         self._reg_kme_08_mode.value = reg_kme_08_mode
 
+        regs = [self._reg_kme_08_start_address0, self._reg_kme_08_start_address1]
+        for reg in regs:
+            reg.value += self.ddr_base_offset
+
         reg_dict['reg_kme_08_start_address1'] = reg_kme_08_start_address1
         reg_dict['KME_08_IP_LOGO'] = KME_08_IP_LOGO
 
-        self.start_addr = reg_kme_08_start_address0
-        self.end_addr = reg_kme_08_start_address0 + KME_08_IP_LOGO
+        self.set_memory_range(reg_kme_08_start_address0, reg_kme_08_start_address0 + KME_08_IP_LOGO)
 
+    def get_regs(self):
         return [self._reg_kme_08_start_address0,
                 self._reg_kme_08_start_address1,
                 self._reg_kme_08_line_offset_addr,

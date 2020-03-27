@@ -19,3 +19,16 @@ from mem_agents.mem_agent_bot_od_w import MemAgent_BOT_OD_W
 from mem_agents.mem_agent_bot_demura_r import MemAgent_BOT_DEMURA_R
 from mem_agents.mem_agent_gfx import MemAgent_GFX, GFXType
 from mem_agents.mem_agent_video_in import MemAgent_VIDEO_IN, VideoInType
+from mem_agents.mem_agent_srp_w import MemAgent_SRP_W, SRPType
+from mem_agents.mem_agent_3drs import *
+from mem_agents.mem_agent_aisr import *
+from mem_agents.mem_agent_local_ai import *
+from mem_agents.mem_agent_2d_nr import *
+from mem_agents.mem_agent_local_contrast import *
+from mem_agents.mem_agent_dnn_in import *
+from mem_agents.mem_agent_dnn_acc import *
+from mem_agents.mem_agent_pldd import *
+from mem_agents.mem_agent_srp_out_w import *
+from mem_agents.mem_agent_local_dimming import *
+from mem_agents.mem_agent_ldg_r import *
+from mem_agents.mem_agent_cpu import *

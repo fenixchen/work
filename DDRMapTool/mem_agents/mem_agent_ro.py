@@ -10,8 +10,7 @@ class MemAgent_RO(MemAgent):
     # pylint: disable=invalid-name
 
     def __init__(self, name, write_agent_name, module_name):
-        super().__init__(name, module_name, DDROp.R)
-        self._write_agent_name = write_agent_name
+        super().__init__(name, module_name, DDROp.R, write_agent_name)
 
     def calc_memory(self):
         name = self.name
@@ -266,6 +265,46 @@ class MemAgent_RO(MemAgent):
             BOT_OD_R_Bandwidth = BOT_OD_R_frame_rate*BOT_OD_R_bits*BOT_OD_R_H_res*BOT_OD_R_V_res/BOT_OD_R_CPR_ratio/8/1000/1000
             BOT_OD_R_DDR_size = 0
             return BOT_OD_R_DDR_size, BOT_OD_R_Bandwidth
+        elif name == 'SRP_READ_1':
+            SRP_Read_1_frame_rate = video_input_refresh_rate
+            SRP_Read_1_bits = video_data_width
+            SRP_Read_1_H_res = video_input_Hactive/4
+            SRP_Read_1_V_res = video_input_Vtotal
+            SRP_Read_1_VDE_res = video_input_Vactive
+            SRP_Read_1_CPR_ratio = video_comp_ratio
+            SRP_Read_1_Bandwidth = SRP_Read_1_frame_rate*SRP_Read_1_bits*SRP_Read_1_H_res*SRP_Read_1_V_res/SRP_Read_1_CPR_ratio/8/1000/1000*(IF(IIR_en == 1, IIR_R_frame, FIR_R_frame))
+            SRP_Read_1_DDR_size = 0
+            return SRP_Read_1_DDR_size, SRP_Read_1_Bandwidth
+        elif name == 'SRP_READ_2':
+            SRP_Read_2_frame_rate = video_input_refresh_rate
+            SRP_Read_2_bits = video_data_width
+            SRP_Read_2_H_res = video_input_Hactive/4
+            SRP_Read_2_V_res = video_input_Vtotal
+            SRP_Read_2_VDE_res = video_input_Vactive
+            SRP_Read_2_CPR_ratio = video_comp_ratio
+            SRP_Read_2_Bandwidth = SRP_Read_2_frame_rate*SRP_Read_2_bits*SRP_Read_2_H_res*SRP_Read_2_V_res/SRP_Read_2_CPR_ratio/8/1000/1000*(IF(IIR_en == 1, IIR_R_frame, FIR_R_frame))
+            SRP_Read_2_DDR_size = 0
+            return SRP_Read_2_DDR_size, SRP_Read_2_Bandwidth
+        elif name == 'SRP_READ_3':
+            SRP_Read_3_frame_rate = video_input_refresh_rate
+            SRP_Read_3_bits = video_data_width
+            SRP_Read_3_H_res = video_input_Hactive/4
+            SRP_Read_3_V_res = video_input_Vtotal
+            SRP_Read_3_VDE_res = video_input_Vactive
+            SRP_Read_3_CPR_ratio = video_comp_ratio
+            SRP_Read_3_Bandwidth = SRP_Read_3_frame_rate*SRP_Read_3_bits*SRP_Read_3_H_res*SRP_Read_3_V_res/SRP_Read_3_CPR_ratio/8/1000/1000*(IF(IIR_en == 1, IIR_R_frame, FIR_R_frame))
+            SRP_Read_3_DDR_size = 0
+            return SRP_Read_3_DDR_size, SRP_Read_3_Bandwidth
+        elif name == 'SRP_READ_4':
+            SRP_Read_4_frame_rate = video_input_refresh_rate
+            SRP_Read_4_bits = video_data_width
+            SRP_Read_4_H_res = video_input_Hactive/4
+            SRP_Read_4_V_res = video_input_Vtotal
+            SRP_Read_4_VDE_res = video_input_Vactive
+            SRP_Read_4_CPR_ratio = video_comp_ratio
+            SRP_Read_4_Bandwidth = SRP_Read_4_frame_rate*SRP_Read_4_bits*SRP_Read_4_H_res*SRP_Read_4_V_res/SRP_Read_4_CPR_ratio/8/1000/1000*(IF(IIR_en == 1, IIR_R_frame, FIR_R_frame))
+            SRP_Read_4_DDR_size = 0
+            return SRP_Read_4_DDR_size, SRP_Read_4_Bandwidth
         else:
             assert False, "Unknown agent:%s" % name
 
@@ -273,9 +312,8 @@ class MemAgent_RO(MemAgent):
     def write_agent_name(self):
         return self._write_agent_name
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
         write_agent_start_addr_name = '%s_start_addr' % self._write_agent_name
-        assert write_agent_start_addr_name in reg_dict
-        self.start_addr = reg_dict[write_agent_start_addr_name]
-        self.end_addr = self.start_addr
-        return []
+        assert write_agent_start_addr_name in reg_dict, "cannot find write agent <%s>" % self._write_agent_name
+        start_addr = reg_dict[write_agent_start_addr_name]
+        self.set_memory_range(start_addr, start_addr)

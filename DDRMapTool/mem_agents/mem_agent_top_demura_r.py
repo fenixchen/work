@@ -21,7 +21,7 @@ class MemAgent_TOP_DEMURA_R(MemAgent):
         TOP_DEMURA_R_DDR_size = 0
         return TOP_DEMURA_R_DDR_size, TOP_DEMURA_R_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # TOP_DEMURA  V*ROUNDUP(ROUNDUP(H*data_width/CRP_ration,0)/128,0)*128/8
         C22 = 90  # data_width
@@ -48,7 +48,8 @@ class MemAgent_TOP_DEMURA_R(MemAgent):
         self._reg_ptc_04_start_address0.value = reg_ptc_04_start_address0
         reg_dict['reg_ptc_04_start_address0'] = reg_ptc_04_start_address0
 
-        self.start_addr = reg_ptc_04_start_address0
-        self.end_addr = reg_ptc_04_start_address0 + 0x1234  # TODO set end_addr
+        self.set_memory_range(reg_ptc_04_start_address0, None)
 
+    @property
+    def registers(self):
         return [self._reg_ptc_04_start_address0]

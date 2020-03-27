@@ -1,6 +1,5 @@
 import enum
 from mem_common import *
-from mem_reg import MemReg
 from mem_agents.mem_agent import MemAgent
 from mem_global_var import *
 
@@ -25,7 +24,15 @@ class MemAgent_GFX(MemAgent):
                   DDROp.R,
                   DDROp.R
                   ]
-        super().__init__(gfx_type.name, gfx_type.name, gfx_op[gfx_type.value])
+        write_agent_name_list = [
+            None,
+            None,
+            None,
+            "GFX_IN_1",  # for GFX_R_1
+            "GFX_IN_2",  # for GFX_R_2
+            "GFX_ALPHA",  # for GFX_ALPHA_R
+        ]
+        super().__init__(gfx_type.name, gfx_type.name, gfx_op[gfx_type.value], write_agent_name_list[gfx_type.value])
 
     def calc_memory(self):
         gfx_type = self._gfx_type
@@ -91,6 +98,3 @@ class MemAgent_GFX(MemAgent):
             return GFX_alpha_R_DDR_size, GFX_alpha_R_Bandwidth
         else:
             assert False, "Unknown type"
-
-    def get_regs(self, reg_dict):
-        return []

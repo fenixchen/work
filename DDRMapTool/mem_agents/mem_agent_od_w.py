@@ -23,7 +23,7 @@ class MemAgent_OD_W(MemAgent):
         OD_W_DDR_size = OD_W_bits*OD_W_H_res*OD_W_VDE_res/OD_W_CPR_ratio/8/1024/1024
         return OD_W_DDR_size, OD_W_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # TOP_OD  V*ROUNDUP(ROUNDUP(H*data_width/CRP_ration,0)/128,0)*128/8
         C20 = 24  # data_width
@@ -42,7 +42,7 @@ class MemAgent_OD_W(MemAgent):
         self._reg_ptc_00_start_address0.value = reg_ptc_00_start_address0
         self._reg_ptc_00_start_address1.value = reg_ptc_01_start_address0
 
-        self.start_addr = reg_ptc_00_start_address0
-        self.end_addr = reg_ptc_00_start_address0 + 0x1234  # TODO set OD_W end_addr
+        self.set_memory_range(self.start_addr, None)
 
+    def get_regs(self):
         return [self._reg_ptc_00_start_address0, self._reg_ptc_00_start_address1]

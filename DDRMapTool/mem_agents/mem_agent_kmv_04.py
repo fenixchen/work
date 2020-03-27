@@ -3,6 +3,7 @@ from mem_reg import MemReg
 from mem_agents.mem_agent import MemAgent
 from mem_global_var import *
 
+
 class MemAgent_KMV_04(MemAgent):
     # pylint: disable=invalid-name
     def __init__(self):
@@ -18,17 +19,17 @@ class MemAgent_KMV_04(MemAgent):
         self._reg_mv04_mode = MemReg('reg_mv04_mode', 'reg_mv04_mode', RegType.OTHER)
 
     def calc_memory(self):
-        KMV_04_frame_rate=ME_out_framerate
-        KMV_04_bits=33
-        KMV_04_H_res=MC_H_Hact/ME1_block_size_H
-        KMV_04_V_res=MC_H_Vtotal/ME1_block_size_V
-        KMV_04_VDE_res=MC_H_Vact/ME1_block_size_V
-        KMV_04_CPR_ratio=ME_CPR_ratio
-        KMV_04_Bandwidth=KMV_04_frame_rate*KMV_04_bits*KMV_04_H_res*KMV_04_V_res/KMV_04_CPR_ratio/8/1000/1000*MEMC_en*IF(PC_mode,0,1)
-        KMV_04_DDR_size=KMV_04_bits*KMV_04_H_res*KMV_04_VDE_res/KMV_04_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode,0,1)        
+        KMV_04_frame_rate = ME_out_framerate
+        KMV_04_bits = 33
+        KMV_04_H_res = MC_H_Hact/ME1_block_size_H
+        KMV_04_V_res = MC_H_Vtotal/ME1_block_size_V
+        KMV_04_VDE_res = MC_H_Vact/ME1_block_size_V
+        KMV_04_CPR_ratio = ME_CPR_ratio
+        KMV_04_Bandwidth = KMV_04_frame_rate*KMV_04_bits*KMV_04_H_res*KMV_04_V_res/KMV_04_CPR_ratio/8/1000/1000*MEMC_en*IF(PC_mode, 0, 1)
+        KMV_04_DDR_size = KMV_04_bits*KMV_04_H_res*KMV_04_VDE_res/KMV_04_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
         return KMV_04_DDR_size, KMV_04_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # KMV_04  270*ROUNDUP(ROUNDUP(480*data_width/CRP_ration,0)/128,0)*128/8
         C17 = 33  # data_width
@@ -62,9 +63,19 @@ class MemAgent_KMV_04(MemAgent):
         self._reg_mv04_line_offset_addr.value = reg_mv04_line_offset_addr
         self._reg_mv04_mode.value = 1
 
-        self.start_addr = reg_mv04_start_address0
-        self.end_addr = reg_mv04_end_address2
+        regs = [self._reg_mv04_start_address0,
+                self._reg_mv04_start_address1,
+                self._reg_mv04_start_address2,
+                self._reg_mv04_end_address0,
+                self._reg_mv04_end_address1,
+                self._reg_mv04_end_address2]
+        for reg in regs:
+            reg.value += self.ddr_base_offset
 
+        self.set_memory_range(reg_mv04_start_address0, reg_mv04_end_address2)
+
+    @property
+    def registers(self):
         return [self._reg_mv04_start_address0,
                 self._reg_mv04_start_address1,
                 self._reg_mv04_start_address2,

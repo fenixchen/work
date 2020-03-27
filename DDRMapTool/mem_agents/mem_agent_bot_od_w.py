@@ -3,6 +3,7 @@ from mem_reg import MemReg
 from mem_agents.mem_agent import MemAgent
 from mem_global_var import *
 
+
 class MemAgent_BOT_OD_W(MemAgent):
     # pylint: disable=invalid-name
     def __init__(self):
@@ -24,7 +25,7 @@ class MemAgent_BOT_OD_W(MemAgent):
         BOT_OD_W_DDR_size = BOT_OD_W_bits*BOT_OD_W_H_res*BOT_OD_W_VDE_res/BOT_OD_W_CPR_ratio/8/1024/1024
         return BOT_OD_W_DDR_size, BOT_OD_W_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # BOT_OD
         C21 = 8  # data_width
@@ -49,9 +50,10 @@ class MemAgent_BOT_OD_W(MemAgent):
         self._reg_kod_wdma_00_start_address2.value = reg_kod_wdma_00_start_address2
         self._reg_kod_wdma_00_start_address3.value = reg_kod_wdma_00_start_address3
 
-        self.start_addr = reg_kod_wdma_00_start_address0
-        self.end_addr = reg_kod_wdma_00_start_address0 + TOP_OD
+        self.set_memory_range(reg_kod_wdma_00_start_address0, reg_kod_wdma_00_start_address0 + TOP_OD)
 
+    @property
+    def registers(self):
         return [self._reg_kod_wdma_00_start_address0,
                 self._reg_kod_wdma_00_start_address1,
                 self._reg_kod_wdma_00_start_address2,

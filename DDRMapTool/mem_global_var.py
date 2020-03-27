@@ -4,7 +4,7 @@ from mem_common import IF
 # global parameter
 DDR_speed = 2133  # MHz
 DDR_size = 1024  # MByte
-DNN_num = 1                     # 0--3
+DNN_num = 2                     # 0--3
 MEMC_mode = 2  # 0:bypass 1:PC mode 2:MEMC on
 MEMC_vfilp = 1
 Top_OD_en = 1
@@ -144,5 +144,9 @@ capture_w_en = 0
 Detect_common = 1
 
 # DNN accelerator
-DNN_Addr_Interleave = 4
+DNN_Addr_Interleave = 2
 
+DDR_frequence = 2133 * 1024 * 1024
+DDR_bit_width = 32 / 8
+DDR_performance = 0.6
+DDR_bandwidth = DDR_frequence * DDR_bit_width

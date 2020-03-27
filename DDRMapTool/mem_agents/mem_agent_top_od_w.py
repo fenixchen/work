@@ -19,6 +19,3 @@ class MemAgent_TOP_OD_W(MemAgent):
         TOP_OD_W_Bandwidth = TOP_OD_W_frame_rate*TOP_OD_W_bits*TOP_OD_W_H_res*TOP_OD_W_V_res/TOP_OD_W_CPR_ratio/8/1000/1000
         TOP_OD_W_DDR_size = TOP_OD_W_bits*TOP_OD_W_H_res*TOP_OD_W_VDE_res/TOP_OD_W_CPR_ratio/8/1024/1024
         return TOP_OD_W_DDR_size, TOP_OD_W_Bandwidth
-
-    def get_regs(self, reg_dict):
-        return []

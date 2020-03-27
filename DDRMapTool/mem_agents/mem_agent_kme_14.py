@@ -3,6 +3,7 @@ from mem_reg import MemReg
 from mem_agents.mem_agent import MemAgent
 from mem_global_var import *
 
+
 class MemAgent_KME_14(MemAgent):
     # pylint: disable=invalid-name
     def __init__(self):
@@ -25,7 +26,7 @@ class MemAgent_KME_14(MemAgent):
         KME_14_DDR_size = KME_14_bits*KME_14_H_res*KME_14_VDE_res/KME_14_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
         return KME_14_DDR_size, KME_14_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # KME_14  270*ROUNDUP(ROUNDUP(480*data_width/CRP_ration,0)/128,0)*128/8
         C14 = 4  # data_width
@@ -49,9 +50,14 @@ class MemAgent_KME_14(MemAgent):
         self._reg_kme_14_line_offset_addr.value = reg_kme_14_line_offset_addr
         self._reg_kme_14_mode.value = reg_kme_14_mode
 
-        self.start_addr = reg_kme_14_start_address0
-        self.end_addr = reg_kme_14_start_address0 + 0x1234  # TODO set KME_14 address
+        regs = [self._reg_kme_14_start_address0, self._reg_kme_14_start_address1]
+        for reg in regs:
+            reg.value += self.ddr_base_offset
 
+        self.set_memory_range(reg_kme_14_start_address0, None)
+
+    @property
+    def registers(self):
         return [self._reg_kme_14_start_address0,
                 self._reg_kme_14_start_address1,
                 self._reg_kme_14_line_offset_addr,

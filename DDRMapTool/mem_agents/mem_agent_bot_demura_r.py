@@ -22,7 +22,7 @@ class MemAgent_BOT_DEMURA_R(MemAgent):
         BOT_DEMURA_R_DDR_size = 0
         return BOT_DEMURA_R_DDR_size, BOT_DEMURA_R_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # BOT_DEMURA  V*ROUNDUP(ROUNDUP(H*data_width/CRP_ration,0)/128,0)*128/8
         C23 = 30  # data_width
@@ -39,7 +39,8 @@ class MemAgent_BOT_DEMURA_R(MemAgent):
 
         self._reg_ptc_05_start_address0.value = reg_ptc_05_start_address0
 
-        self.start_addr = reg_ptc_05_start_address0
-        self.end_addr = reg_ptc_05_start_address0 + BOT_DEMURA
+        self.set_memory_range(reg_ptc_05_start_address0, reg_ptc_05_start_address0 + BOT_DEMURA)
 
+    @property
+    def registers(self):
         return [self._reg_ptc_05_start_address0]

@@ -25,7 +25,7 @@ class MemAgent_KMV_02(MemAgent):
         KMV_02_DDR_size = KMV_02_bits*KMV_02_H_res*KMV_02_VDE_res/KMV_02_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
         return KMV_02_DDR_size, KMV_02_Bandwidth
 
-    def get_regs(self, reg_dict):
+    def allocate_memory(self, reg_dict):
 
         # KMV_02  270*ROUNDUP(ROUNDUP(480*data_width/CRP_ration,0)/128,0)*128/8
         C16 = 40  # data_width
@@ -52,9 +52,14 @@ class MemAgent_KMV_02(MemAgent):
         self._reg_mv02_line_offset_addr.value = reg_mv02_line_offset_addr
         self._reg_mv02_mode.value = 1
 
-        self.start_addr = reg_mv02_start_address0
-        self.end_addr = reg_mv02_end_address0
+        regs = [self._reg_mv02_start_address0, self._reg_mv02_end_address0]
+        for reg in regs:
+            reg.value += self.ddr_base_offset
 
+        self.set_memory_range(reg_mv02_start_address0, reg_mv02_end_address0)
+
+    @property
+    def registers(self):
         return [self._reg_mv02_start_address0,
                 self._reg_mv02_end_address0,
                 self._reg_mv02_line_offset_addr,
