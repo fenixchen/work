@@ -109,8 +109,8 @@ class MemConfig_1Chip8K120Hz(MemConfig):
 def main():
     config = MemConfig_1Chip8K120Hz()
     mapping = config.place_memory()
-    config.print_mapping(mapping)
-    config.print_registers(mapping)
+    #config.print_mapping(mapping)
+    # config.print_registers(mapping)
 
 
 if __name__ == '__main__':

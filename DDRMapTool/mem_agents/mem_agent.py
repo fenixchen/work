@@ -146,7 +146,7 @@ class MemAgent:
     def registers(self):
         return []
 
-    def set_memory_range(self, start_addr, end_addr):
+    def set_memory_range(self, start_addr, end_addr, ddr_tag=None):
         assert start_addr is not None
         self._start_addr = start_addr
 
@@ -162,3 +162,5 @@ class MemAgent:
                 p_warn("Increase <%s> memory from %.2fM to end_addr(0x%08X) - start_addr(0x%08X) = %.2fM" % (
                     self._name, self.size_m, self.end_addr, self.start_addr, new_size / 1024.0 / 1024.0))
             self._mem_size = new_size
+        if ddr_tag is not None:
+            self._ddr_tag = ddr_tag

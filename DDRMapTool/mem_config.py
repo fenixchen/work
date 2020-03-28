@@ -24,6 +24,9 @@ class MemConfig:
     def agent_list(self):
         return self._mm.agent_list
 
+    def get_agent(self, agent_name):
+        return self._mm.get_agent(agent_name)
+
     def _get_ddr_mapping(self):
         """
         return list[[agent0_on_ddr0, agent1_on_ddr0], [agent0_on_ddr1], [], []]
@@ -84,6 +87,6 @@ class MemConfig:
                     continue
                 p_debug("Register for <%s>, count: %d" % (agent.name, len(regs)))
                 p_debug("-" * 110)
-                for i, reg in enumerate(regs):
-                    p_debug("[%2d] %s" % (i, reg))
+                for j, reg in enumerate(regs):
+                    p_debug("[%2d] %s" % (j, reg))
                 p_debug("-" * 110)

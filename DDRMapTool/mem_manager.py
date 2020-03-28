@@ -219,10 +219,11 @@ class MemManager:
     def allocate_agent_memory(self):
         self._allocate_pre_located_memory()
 
-        # Process un-allocated memory, set start address first
+        # Process agent with DDR tag but no start address
+        allocator_list = [MemAllocator(DDRTag(i)) for i in range(DDR_COUNT)]
         for i in range(DDR_COUNT):
-            p_verbose('>>> Allicate un-located memory in <DDR%s>' % (i + 1))
-            allocator = MemAllocator()
+            p_verbose('>>> Allocate un-located agent in <DDR%s>' % (i + 1))
+            allocator = allocator_list[i]
             for agent in self._agent_list:
                 if agent.unused or agent.ddr_tag.value != i or agent.ddr_op == DDROp.R:
                     continue
@@ -233,6 +234,20 @@ class MemManager:
                 agent.allocate_memory(reg_dict)
                 reg_dict['%s_start_addr' % agent.name] = agent.start_addr
                 p_verbose("Allocate start_addr %s" % agent.alloc_info)
+
+        # Process agent without DDR
+        for agent in self._agent_list:
+            if agent.unused or agent.ddr_op == DDROp.R:
+                continue
+            if agent.allocated:
+                continue
+            p_warn('>>> Allocate un-tagged agent %s' % (agent.name))
+            for i in range(DDR_COUNT):
+                allocator = allocator_list[i]
+                if allocator.allocate_memory(agent):
+                    p_warn('>>> Allocate un-tagged agent %s success at DDR%d' % (agent.name, i + 1))
+                    p_warn(agent.debug_info)
+                    break
 
         # process read only agent
         for agent in self.agent_list:

@@ -1,11 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-import matplotlib
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mem_config_1chip8k120hz import MemConfig_1Chip8K120Hz
-
-matplotlib.use("TkAgg")
+from mem_common import *
 
 
 def donothing():
@@ -20,14 +18,18 @@ class MainWindow(tk.Frame):
         self._menu = self.create_menu()
         self._mapping = config.place_memory()
         self._init_ui()
+
+        child_id = self._tree.get_children()[0]
+        self._tree.selection_set(child_id)
+        self._tree.focus(child_id)
+
         self.pack()
 
     def _init_ui(self):
         master = self.master
-
+        """
         self._toolbar = tk.Frame(master, bd=1, relief=tk.RAISED)
-        self._toolbar.pack(side=tk.TOP, fill=tk.X)
-
+        self._toolbar.pack(side=tk.TOP, fill=tk.X)        
         self._btn_run = tk.Button(self._toolbar, text='run', relief=tk.FLAT, command=self.run)
         self._btn_run.pack(side=tk.LEFT, padx=2, pady=2)
 
@@ -39,6 +41,7 @@ class MainWindow(tk.Frame):
 
         self._btn_status = tk.Label(self._statusbar, text='status')
         self._btn_status.pack(side=tk.LEFT, padx=2)
+        """
 
         self._canvas = tk.Canvas(master, width=600, bg="white")
         self._canvas.pack(side=tk.RIGHT, fill=tk.Y)
@@ -48,12 +51,44 @@ class MainWindow(tk.Frame):
 
         self._tree = self._create_treeview(self._panel_content)
 
-        self._notebook = self._create_notebook(self._panel_content)
+        self._notebook, self._table_agent = self._create_notebook(self._panel_content)
 
     def _on_agent_tree_select(self, event):
-        for item in self._tree.selection():
-            item_text = self._tree.item(item, "text")
-            print(item_text)
+        tree = self._tree
+        selection = None
+        ddr_tag = DDRTag.NONE
+        for item in tree.selection():
+            selection = tree.item(item, "text")
+            break
+        if selection is None:
+            return
+        elif selection == 'Memory':
+            ddr_tag = DDRTag.NONE
+        elif selection in ['DDR1', 'DDR2', 'DDR3', 'DDR4']:
+            ddr_tag = DDRTag(int(selection[-1]) - 1)
+        else:
+            agent = self._config.get_agent(selection)
+            assert agent is not None
+        table = self._table_agent
+
+        table.delete(*table.get_children())
+        for i, agent in enumerate(self._config.agent_list):
+            if agent.unused:
+                continue
+            if ddr_tag == DDRTag.NONE or ddr_tag == agent.ddr_tag:
+                if agent.ddr_op == DDROp.W:
+                    assert agent.start_addr is not None
+                    table.insert('', 'end', text=agent.name, values=(
+                        str(i), agent.name, agent.op_str, agent.block_name,
+                        '0x%08X' % agent.start_addr,
+                        '0x%08X' % agent.end_addr,
+                        '%.2fM' % agent.size_m))
+                else:
+                    table.insert('', 'end', text=agent.name, values=(
+                        str(i), agent.name, agent.op_str, agent.block_name,
+                        '',
+                        '',
+                        '%.2fM' % agent.size_m))
 
     def _create_treeview(self, master):
         tree = ttk.Treeview(master, show="tree", selectmode="browse")
@@ -75,10 +110,7 @@ class MainWindow(tk.Frame):
         tree.item("Memory", open=True)
 
         tree.bind('<<TreeviewSelect>>', self._on_agent_tree_select)
-        #tree.item("DDR1", open=True)
-        #tree.item("DDR2", open=True)
-        #tree.item("DDR3", open=True)
-        #tree.item("DDR4", open=True)
+
         return tree
 
     def _create_notebook(self, master):
@@ -86,7 +118,7 @@ class MainWindow(tk.Frame):
         notebook = ttk.Notebook(master)
         master.add(notebook)
 
-        frame = self._create_table_frame(notebook)
+        frame, table_agent = self._create_table_frame(notebook)
         notebook.add(frame, text='Memory Layour')
 
         frame = self._create_chart_frame(notebook)
@@ -95,38 +127,39 @@ class MainWindow(tk.Frame):
         frame = self._create_regiser_frame(notebook)
         notebook.add(frame, text='Registers')
 
-        return notebook
+        return notebook, table_agent
 
     def _create_table_frame(self, master):
         frame = ttk.Frame(master, relief=tk.FLAT)
 
         table_agent = ttk.Treeview(frame, show='headings',
-                                   columns=['name', "start_addr", "end_addr", "size"])
+                                   columns=['NO', 'name', 'rw', 'ip', "start_addr", "end_addr", "size"])
         table_agent.pack(fill=tk.BOTH, expand=1)
+        table_agent.heading('NO', text='NO')
         table_agent.heading('name', text='Agent Name')
+        table_agent.heading('rw', text='R/W')
+        table_agent.heading('ip', text='IP')
         table_agent.heading('start_addr', text='Start Address')
         table_agent.heading('end_addr', text='End Address')
         table_agent.heading('size', text='Size(M)')
 
+        table_agent.column('NO', width=4, anchor='e')
         table_agent.column('name', width=50, anchor='w')
-        table_agent.column('start_addr', width=50, anchor='e')
-        table_agent.column('end_addr', width=50, anchor='e')
-        table_agent.column('size', width=50, anchor='e')
+        table_agent.column('ip', width=80, anchor='w')
+        table_agent.column('rw', width=4, anchor='w')
+        table_agent.column('start_addr', width=40, anchor='e')
+        table_agent.column('end_addr', width=40, anchor='e')
+        table_agent.column('size', width=40, anchor='e')
 
-        table_agent.insert('', 'end', text='KMC_0', values=('KMC_0', '0x10000000', '0x10004000', '0.64M'), tag='gray')
-        table_agent.insert('', 'end', text='KMC_1', values=('KMC_1', '0x10000000', '0x10004000', '0.64M'), tag='white')
-        table_agent.insert('', 'end', text='KMC_2', values=('KMC_0', '0x10000000', '0x10004000', '0.64M'), tag='gray')
-        table_agent.insert('', 'end', text='KMC_3', values=('KMC_1', '0x10000000', '0x10004000', '0.64M'), tag='white')
-        table_agent.tag_configure('gray', background='#cccccc')
-        table_agent.tag_configure('white', background='#ffffff')
-        return frame
+        table_agent.insert('', 'end', text='KMC_0', values=('1', 'KMC_0', 'TCON', 'W', '0x10000000', '0x10004000', '0.64M'))
+        return frame, table_agent
 
     def _create_chart_frame(self, master):
         frame = ttk.Frame(master, relief=tk.FLAT)
-        f = Figure(figsize=(5, 5), dpi=100)
-        a = f.add_subplot(111)
-        a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 6, 1, 3, 8, 9, 3, 5])
-        canvas = FigureCanvasTkAgg(f, frame)
+        fig = Figure(figsize=(5, 5), dpi=100)
+        plt = fig.add_subplot(111)
+        plt.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 6, 1, 3, 8, 9, 3, 5])
+        canvas = FigureCanvasTkAgg(fig, frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         return frame
