@@ -10,4 +10,5 @@
         "--max-line-length=200"
     ],
     "editor.formatOnSave": true,
+    "outline.showVariables": false,
 }
