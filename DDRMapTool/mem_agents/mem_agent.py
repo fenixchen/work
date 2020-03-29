@@ -1,6 +1,8 @@
+import functools
 from mem_common import *
 
 
+@functools.total_ordering
 class MemAgent:
     def __init__(self, name, module_name, op, write_agent_name=None):
         self._name = name
@@ -18,6 +20,20 @@ class MemAgent:
         self._end_addr = None
         self._block = None
         self._write_agent_name = write_agent_name  # for R agent to detect DDR tag
+
+    def __eq__(self, other):
+        if not isinstance(other, MemAgent):
+            raise NotImplementedError()
+        self_start_addr = 0 if self._start_addr is None else self._start_addr
+        other_start_addr = 0 if other._start_addr is None else other._start_addr
+        return (self._ddr_tag.value, self_start_addr, self._name) == (other._ddr_tag.value, other_start_addr, other._name)
+
+    def __lt__(self, other):
+        if not isinstance(other, MemAgent):
+            raise NotImplementedError()
+        self_start_addr = 0 if self._start_addr is None else self._start_addr
+        other_start_addr = 0 if other._start_addr is None else other._start_addr
+        return (self._ddr_tag.value, self_start_addr, self._name) < (other._ddr_tag.value, other_start_addr, other._name)
 
     @property
     def unused(self):

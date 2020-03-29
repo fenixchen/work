@@ -54,7 +54,8 @@ class MemAgent_KMV_01(MemAgent):
 
         self.set_memory_range(reg_mv01_start_address0, reg_mv01_end_address0)
 
-    def get_regs(self):
+    @property
+    def registers(self):
         return [self._reg_mv01_start_address0,
                 self._reg_mv01_end_address0,
                 self._reg_mv01_line_offset_addr,

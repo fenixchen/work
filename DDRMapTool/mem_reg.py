@@ -1,5 +1,6 @@
 from mem_common import *
 
+
 class MemReg:
     def __init__(self, name, addr, reg_type=RegType.OTHER, start_bit=0, end_bit=31):
         self._name = name
@@ -14,6 +15,13 @@ class MemReg:
         return self._name
 
     @property
+    def addr_str(self):
+        if isinstance(self._addr, str):
+            return self._addr
+        else:
+            return "0x%08X" % self._addr
+
+    @property
     def value(self):
         return self._value
 
@@ -24,12 +32,11 @@ class MemReg:
     def __str__(self):
         if isinstance(self._addr, str):
             if self._start_bit != 0 or self._end_bit != 31:
-                return "%-30s[%d:%d] <= 0x%08X" %  (self._addr, self._start_bit, self._end_bit, self._value)
+                return "%-30s[%d:%d] <= 0x%08X" % (self._addr, self._start_bit, self._end_bit, self._value)
             else:
-                return "%-30s <= 0x%08X" %  (self._addr, self._value)
+                return "%-30s <= 0x%08X" % (self._addr, self._value)
         else:
             if self._start_bit != 0 or self._end_bit != 31:
-                return "0x%08X[%d:%d] <= 0x%08X" %  (self._addr, self._start_bit, self._end_bit, self._value)
+                return "0x%08X[%d:%d] <= 0x%08X" % (self._addr, self._start_bit, self._end_bit, self._value)
             else:
-                return "0x%08X <= 0x%08X" %  (self._addr, self._value)
-                
+                return "0x%08X <= 0x%08X" % (self._addr, self._value)

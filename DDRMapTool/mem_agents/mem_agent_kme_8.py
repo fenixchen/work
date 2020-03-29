@@ -64,7 +64,8 @@ class MemAgent_KME_8(MemAgent):
 
         self.set_memory_range(reg_kme_08_start_address0, reg_kme_08_start_address0 + KME_08_IP_LOGO)
 
-    def get_regs(self):
+    @property
+    def registers(self):
         return [self._reg_kme_08_start_address0,
                 self._reg_kme_08_start_address1,
                 self._reg_kme_08_line_offset_addr,

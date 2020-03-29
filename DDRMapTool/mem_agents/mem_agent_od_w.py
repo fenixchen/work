@@ -44,5 +44,6 @@ class MemAgent_OD_W(MemAgent):
 
         self.set_memory_range(self.start_addr, None)
 
-    def get_regs(self):
+    @property
+    def registers(self):
         return [self._reg_ptc_00_start_address0, self._reg_ptc_00_start_address1]

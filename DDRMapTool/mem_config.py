@@ -37,7 +37,7 @@ class MemConfig:
             for agent in self.agent_list:
                 if agent.ddr_tag.value == i:
                     agents.append(agent)
-            agents.sort(key=lambda agent: 0 if (agent is None or agent.start_addr is None) else agent.start_addr)
+            agents.sort()
             mapping[i] = agents
         return mapping
 
