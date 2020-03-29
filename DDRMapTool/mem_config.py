@@ -27,6 +27,28 @@ class MemConfig:
     def get_agent(self, agent_name):
         return self._mm.get_agent(agent_name)
 
+    def calc_memory_usage(self, ddr_tag):
+        used = 0
+        for agent in self._mm.agent_list:
+            if agent.ddr_op == DDROp.W and agent.allocated and agent.ddr_tag == ddr_tag or ddr_tag == DDRTag.NONE:
+                used += agent.size
+        if ddr_tag == DDRTag.NONE:
+            unused = DDR_SIZE_BYTE * DDR_COUNT - used
+        else:
+            unused = DDR_SIZE_BYTE - used
+        return (used / 1024 / 1024, unused / 1024 / 1024)
+
+    def calc_bandwidth_usage(self, ddr_tag):
+        used = 0
+        for agent in self._mm.agent_list:
+            if agent.ddr_tag == ddr_tag or ddr_tag == DDRTag.NONE:
+                used += agent.bandwidth
+        if ddr_tag == DDRTag.NONE:
+            unused = DDR_bandwidth * 4 - used
+        else:
+            unused = DDR_bandwidth - used
+        return (used / 1024 / 1024, unused / 1024 / 1024)
+
     def _get_ddr_mapping(self):
         """
         return list[[agent0_on_ddr0, agent1_on_ddr0], [agent0_on_ddr1], [], []]

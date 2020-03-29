@@ -103,13 +103,7 @@ class MemFrameConfig(tk.Frame):
         return frame, table
 
     def _create_chart_frame(self, master):
-        frame = ttk.Frame(master, relief=tk.FLAT)
-        fig = Figure(figsize=(5, 5), dpi=100)
-        plt = fig.add_subplot(111)
-        plt.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 6, 1, 3, 8, 9, 3, 5])
-        canvas = FigureCanvasTkAgg(fig, frame)
-        canvas.draw()
-        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        frame = ttk.LabelFrame(master, text='Statistics', relief=tk.FLAT)
         return frame
 
     def on_ddr_changed(self, ddr_tag, show_read_agent, show_right_agent):
@@ -146,6 +140,7 @@ class MemFrameConfig(tk.Frame):
             self._top_agent_item = None
         table.update()
         self._draw_agent_memory()
+        self._plot_chart(ddr_tag)
 
     def _draw_agent_memory(self):
 
@@ -179,6 +174,32 @@ class MemFrameConfig(tk.Frame):
             ddr_color = ['red', 'green', 'blue', 'yellow']
             canvas.create_rectangle(fill_left + DRAW_PADDING, top, fill_right + DRAW_PADDING,
                                     bottom, fill=ddr_color[agent.ddr_tag.value])
+
+    def _plot_chart(self, ddr_tag):
+        for widget in self._frame_chart.winfo_children():
+            widget.destroy()
+
+        fig = Figure(figsize=(5, 5), dpi=100)
+
+        labels = 'Used', 'Unused'
+        usage = self._config.calc_memory_usage(ddr_tag)
+        explode = (0.1, 0)
+        plt = fig.add_subplot(121)
+        plt.set_title('%s Memory' % ('TOTAL' if ddr_tag == DDRTag.NONE else ddr_tag.name))
+        plt.pie(usage, explode=explode, labels=labels, autopct='%1.1f%%',
+                shadow=True, startangle=90)
+
+        labels = 'Used', 'Unused'
+        usage = self._config.calc_bandwidth_usage(ddr_tag)
+        explode = (0.1, 0)
+        plt = fig.add_subplot(122)
+        plt.set_title('%s Bandwidth' % ('TOTAL' if ddr_tag == DDRTag.NONE else ddr_tag.name))
+        plt.pie(usage, explode=explode, labels=labels, autopct='%1.1f%%',
+                shadow=True, startangle=90)
+
+        canvas = FigureCanvasTkAgg(fig, self._frame_chart)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
     def _on_agent_changed(self, event):
         selection = None
