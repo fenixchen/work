@@ -1,7 +1,7 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.pythonPath": "D:\\Miniconda3\\envs\\myenv\\python.exe",
+    "python.pythonPath": "D:\\Python36\\python.exe",
     "python.linting.pylintArgs": [
         "--disable=unused-variable, unused-argument,missing-docstring,unused-wildcard-import,wildcard-import, line-too-long,trailing-whitespace,missing-final-newline"
     ],

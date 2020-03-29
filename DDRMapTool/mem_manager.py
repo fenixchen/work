@@ -241,12 +241,11 @@ class MemManager:
                 continue
             if agent.allocated:
                 continue
-            p_warn('>>> Allocate un-tagged agent %s' % (agent.name))
+            p_verbose('>>> Allocate un-tagged agent %s' % (agent.name))
             for i in range(DDR_COUNT):
                 allocator = allocator_list[i]
                 if allocator.allocate_memory(agent):
-                    p_warn('>>> Allocate un-tagged agent %s success at DDR%d' % (agent.name, i + 1))
-                    p_warn(agent.debug_info)
+                    p_warn('>>> Allocate un-tagged agent %s success at DDR%d - [0x%08X, 0x%08X]' % (agent.name, i + 1, agent.start_addr, agent.end_addr))
                     break
 
         # process read only agent
