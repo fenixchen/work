@@ -9,7 +9,7 @@ class MemAgent_LOCAL_AI_W(MemAgent):
         super().__init__('LOCAL_AI_W', 'LOCAL_AI_W', DDROp.W)
 
     def calc_memory(self):
-        Local_AI_W_frame_rate = video_input_refresh_rate
+        Local_AI_W_frame_rate = GV.video_input_refresh_rate
         Local_AI_W_bits = 6
         Local_AI_W_H_res = 960
         Local_AI_W_VDE_res = 540
@@ -25,7 +25,7 @@ class MemAgent_LOCAL_AI_R(MemAgent):
         super().__init__('LOCAL_AI_R', 'LOCAL_AI_R', DDROp.R, 'LOCAL_AI_W')
 
     def calc_memory(self):
-        Local_AI_R_frame_rate = video_input_refresh_rate
+        Local_AI_R_frame_rate = GV.video_input_refresh_rate
         Local_AI_R_bits = 6
         Local_AI_R_H_res = 960
         Local_AI_R_VDE_res = 540

@@ -15,12 +15,12 @@ class MemAgent_BOT_OD_W(MemAgent):
         self._reg_kod_wdma_00_start_address3 = MemReg('reg_kod_wdma_00_start_address3', 'reg_kod_wdma_00_start_address3', RegType.START)
 
     def calc_memory(self):
-        BOT_OD_W_frame_rate = BOT_OD_framerate
-        BOT_OD_W_bits = BOT_OD_bits
-        BOT_OD_W_H_res = BOT_OD_Hact
-        BOT_OD_W_V_res = BOT_OD_Vtotal
-        BOT_OD_W_VDE_res = BOT_OD_Vact
-        BOT_OD_W_CPR_ratio = BOT_OD_CPR_ratio
+        BOT_OD_W_frame_rate = GV.BOT_OD_framerate
+        BOT_OD_W_bits = GV.BOT_OD_bits
+        BOT_OD_W_H_res = GV.BOT_OD_Hact
+        BOT_OD_W_V_res = GV.BOT_OD_Vtotal
+        BOT_OD_W_VDE_res = GV.BOT_OD_Vact
+        BOT_OD_W_CPR_ratio = GV.BOT_OD_CPR_ratio
         BOT_OD_W_Bandwidth = BOT_OD_W_frame_rate*BOT_OD_W_bits*BOT_OD_W_H_res*BOT_OD_W_V_res/BOT_OD_W_CPR_ratio/8/1000/1000
         BOT_OD_W_DDR_size = BOT_OD_W_bits*BOT_OD_W_H_res*BOT_OD_W_VDE_res/BOT_OD_W_CPR_ratio/8/1024/1024
         return BOT_OD_W_DDR_size, BOT_OD_W_Bandwidth

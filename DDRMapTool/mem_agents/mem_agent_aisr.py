@@ -36,7 +36,7 @@ class MemAgent_AISR_MAP(MemAgent):
         super().__init__('AISR_MAP', 'AISR_MAP', DDROp.R, 'DNN_IN_1')
 
     def calc_memory(self):
-        AISR_MAP_frame_rate = video_input_refresh_rate
+        AISR_MAP_frame_rate = GV.video_input_refresh_rate
         AISR_MAP_bits = 8
         AISR_MAP_H_res = 240
         AISR_MAP_VDE_res = 135

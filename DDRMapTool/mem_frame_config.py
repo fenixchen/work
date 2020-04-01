@@ -1,27 +1,33 @@
 import tkinter as tk
 from tkinter import ttk
+import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mem_common import *
+from mem_global_var import *
 
 TREEVIEW_ROW_HEIGHT = 24
 DRAW_PADDING = 10
 
 
 class MemFrameConfig(tk.Frame):
-    def __init__(self, master, config):
+    def __init__(self, master, main_window, config):
         self._master = master
+        self._main_window = main_window
         self._config = config
         self._top_agent_item = None
         super().__init__(master)
-
+        matplotlib.rcParams['font.size'] = 7
         self._agent_item_list = []
-        self._mapping = config.place_memory()
         self._init_ui(self)
 
+    @property
+    def config(self):
+        return self._config
+
     def _init_ui(self, master):
-        screen_width = master.winfo_screenwidth()
-        screen_height = master.winfo_screenheight()
+        screen_width = master.winfo_screenwidth() - 30
+        screen_height = master.winfo_screenheight() - 30
 
         self._panel_right = tk.PanedWindow(master, borderwidth=0, orient=tk.VERTICAL)
         self._panel_right.pack(fill=tk.BOTH, expand=1)
@@ -30,7 +36,7 @@ class MemFrameConfig(tk.Frame):
         self._panel_right.add(self._panel_top, height=screen_height / 5 * 3)
 
         self._panel_bottom = tk.PanedWindow(self._panel_right, borderwidth=0, orient=tk.HORIZONTAL)
-        self._panel_right.add(self._panel_bottom)
+        self._panel_right.add(self._panel_bottom, height=screen_height / 5 * 2)
 
         panel_width = screen_width / 8 * 7
         self._table_agent = self._create_table_agent(master)
@@ -46,8 +52,19 @@ class MemFrameConfig(tk.Frame):
         self._frame_chart = self._create_chart_frame(self._panel_bottom)
         self._panel_bottom.add(self._frame_chart, width=panel_width / 2)
 
+        self._popup_menu_register = tk.Menu(self, tearoff=0)
+        self._popup_menu_register.add_command(label="Export registers...",
+                                              command=self._on_register_export)
+        self._table_regiser.bind("<Button-3>", self._register_menu_popup)
+
+    def _register_menu_popup(self, event):
+        self._popup_menu_register.post(event.x_root, event.y_root)
+
+    def _on_register_export(self):
+        pass
+
     def _create_table_agent(self, master):
-        table = ttk.Treeview(master, show='headings',
+        table = ttk.Treeview(master, show='headings', selectmode='browse',
                              columns=['NO', 'name', 'rw', 'ddr', 'ip', 'start_addr', 'end_addr', 'size', 'bandwidth'],
                              yscrollcommand=self._on_y_scroll)
         table.pack(fill=tk.BOTH, expand=1)
@@ -107,33 +124,43 @@ class MemFrameConfig(tk.Frame):
         return frame
 
     def on_ddr_changed(self, ddr_tag, show_read_agent, show_right_agent):
+        self._config.place_memory()
         table = self._table_agent
         table.delete(*table.get_children())
         number = 0
         self._agent_item_list = []
+        color_tag = 'color1'
+        last_block_name = ''
         for agent in self._config.agent_list:
             if agent.unused:
                 continue
             if ddr_tag == DDRTag.NONE or ddr_tag == agent.ddr_tag:
                 if agent.ddr_op == DDROp.W and show_right_agent:
-                    assert agent.start_addr is not None
+                    if agent.block_name != last_block_name:
+                        color_tag = 'color1' if color_tag == 'color2' else 'color2'
+                        last_block_name = agent.block_name
                     iid = table.insert('', 'end', text=agent.name, values=(
                         str(number), agent.name, agent.op_str, agent.ddr_tag.name, agent.block_name,
                         '0x%08X' % agent.start_addr,
                         '0x%08X' % agent.end_addr,
                         '%.2fM' % agent.size_m,
-                        '%.2fM' % agent.bandwidth_m))
+                        '%.2fM' % agent.bandwidth_m), tags=[color_tag])
                     number += 1
                     self._agent_item_list.append(iid)
                 elif agent.ddr_op == DDROp.R and show_read_agent:
+                    if agent.block_name != last_block_name:
+                        color_tag = 'color1' if color_tag == 'color2' else 'color2'
+                        last_block_name = agent.block_name
                     iid = table.insert('', 'end', text=agent.name, values=(
                         str(number), agent.name, agent.op_str, agent.ddr_tag.name, agent.block_name,
                         '',
                         '',
                         '',
-                        '%.2fM' % agent.bandwidth_m))
+                        '%.2fM' % agent.bandwidth_m), tags=[color_tag])
                     number += 1
                     self._agent_item_list.append(iid)
+        table.tag_configure('color1', foreground='black', background='azure')
+        table.tag_configure('lightblue', foreground='black', background='old lace')
         if self._agent_item_list:
             self._top_agent_item = self._agent_item_list[0]
         else:
@@ -150,7 +177,7 @@ class MemFrameConfig(tk.Frame):
         canvas_height = canvas.winfo_height()
         canvas.create_text(canvas_width / 2, TREEVIEW_ROW_HEIGHT / 2,
                            justify=tk.CENTER,
-                           text='DDR_SIZE:%dM' % DDR_SIZE)
+                           text='DDR_size:%dM' % GV.DDR_size)
         for agent_item in self._agent_item_list:
             if agent_item < self._top_agent_item:
                 continue
@@ -169,8 +196,8 @@ class MemFrameConfig(tk.Frame):
             else:
                 break
             width_total = right - left
-            fill_left = int(agent.start_addr / float(DDR_SIZE_BYTE) * width_total)
-            fill_right = int(agent.end_addr / float(DDR_SIZE_BYTE) * width_total)
+            fill_left = int(agent.start_addr / float(GV.DDR_size_byte) * width_total)
+            fill_right = int(agent.end_addr / float(GV.DDR_size_byte) * width_total)
             ddr_color = ['red', 'green', 'blue', 'yellow']
             canvas.create_rectangle(fill_left + DRAW_PADDING, top, fill_right + DRAW_PADDING,
                                     bottom, fill=ddr_color[agent.ddr_tag.value])
@@ -178,24 +205,26 @@ class MemFrameConfig(tk.Frame):
     def _plot_chart(self, ddr_tag):
         for widget in self._frame_chart.winfo_children():
             widget.destroy()
+        fig = Figure()
 
-        fig = Figure(figsize=(5, 5), dpi=100)
-
-        labels = 'Used', 'Unused'
         usage = self._config.calc_memory_usage(ddr_tag)
         explode = (0.1, 0)
         plt = fig.add_subplot(121)
         plt.set_title('%s Memory' % ('TOTAL' if ddr_tag == DDRTag.NONE else ddr_tag.name))
-        plt.pie(usage, explode=explode, labels=labels, autopct='%1.1f%%',
-                shadow=True, startangle=90)
+        patches, texts, autotexts = plt.pie(usage, explode=(0.1, 0), labels=('Used', 'Unused'), autopct='', shadow=True, startangle=90)
+        total = usage[0] + usage[1]
+        for i, auto_text in enumerate(autotexts):
+            auto_text.set_text('%.2fM\n%.2f%%' % (usage[i], usage[i] * 100.0 / total))
+            # auto_text.set_fontsize(7)
 
-        labels = 'Used', 'Unused'
+        labels = ('Used', 'Unused')
         usage = self._config.calc_bandwidth_usage(ddr_tag)
-        explode = (0.1, 0)
         plt = fig.add_subplot(122)
         plt.set_title('%s Bandwidth' % ('TOTAL' if ddr_tag == DDRTag.NONE else ddr_tag.name))
-        plt.pie(usage, explode=explode, labels=labels, autopct='%1.1f%%',
-                shadow=True, startangle=90)
+        patches, texts, autotexts = plt.pie(usage, explode=(0.1, 0), labels=('Used', 'Unused'), autopct='', shadow=True, startangle=90, colors=('red', 'green'))
+        total = usage[0] + usage[1]
+        for i, auto_text in enumerate(autotexts):
+            auto_text.set_text('%.2f%%' % (usage[i] * 100.0 / total))
 
         canvas = FigureCanvasTkAgg(fig, self._frame_chart)
         canvas.draw()
@@ -207,6 +236,7 @@ class MemFrameConfig(tk.Frame):
             selection = self._table_agent.item(item, 'text')
             break
         if selection is None:
+            self._main_window.on_agent_select(None)
             return
         agent = self._config.get_agent(selection)
 
@@ -221,3 +251,13 @@ class MemFrameConfig(tk.Frame):
                 reg.addr_str,
                 '0x%08X' % reg.value))
             number += 1
+        self._main_window.on_agent_select(agent)
+
+    def select_agent(self, agent):
+        for i, agent_item in enumerate(self._agent_item_list):
+            if self._table_agent.item(agent_item)['text'] == agent.name:
+                self._table_agent.focus_set()
+                self._table_agent.selection_set(agent_item, agent_item)
+                self._table_agent.focus(agent_item)
+                self._table_agent.yview_moveto(float(i) / len(self._agent_item_list))
+                break

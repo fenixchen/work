@@ -27,14 +27,14 @@ class MemAgent_KMC_9(MemAgent):
         self._reg_kmc_09_mode.value = 1
 
     def calc_memory(self):
-        KMC_9_frame_rate = MC_L_in_framerate
-        KMC_9_bits = MC_L_bits
-        KMC_9_H_res = MC_L_Hact/2+MC_L_Hoverlap
-        KMC_9_V_res = MC_L_Vtotal/2
-        KMC_9_VDE_res = MC_L_Vact/2
-        KMC_9_CPR_ratio = MC_L_CPR_ratio
+        KMC_9_frame_rate = GV.MC_L_in_framerate
+        KMC_9_bits = GV.MC_L_bits
+        KMC_9_H_res = GV.MC_L_Hact/2+GV.MC_L_Hoverlap
+        KMC_9_V_res = GV.MC_L_Vtotal/2
+        KMC_9_VDE_res = GV.MC_L_Vact/2
+        KMC_9_CPR_ratio = GV.MC_L_CPR_ratio
         KMC_9_Bandwidth = KMC_9_frame_rate*KMC_9_bits*KMC_9_H_res*KMC_9_V_res/KMC_9_CPR_ratio/8/1000/1000
-        KMC_9_DDR_size = KMC_9_bits*KMC_9_H_res*KMC_9_VDE_res/KMC_9_CPR_ratio/8/1024/1024*MC_L_buff_num
+        KMC_9_DDR_size = KMC_9_bits*KMC_9_H_res*KMC_9_VDE_res/KMC_9_CPR_ratio/8/1024/1024*GV.MC_L_buff_num
         return KMC_9_DDR_size, KMC_9_Bandwidth
 
     def allocate_memory(self, reg_dict):

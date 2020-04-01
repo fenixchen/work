@@ -2,6 +2,7 @@ from mem_common import *
 from mem_block import MemBlock
 import mem_agents
 from mem_allocator import MemAllocator
+from mem_global_var import GV
 
 
 class MemManager:
@@ -18,7 +19,8 @@ class MemManager:
         self._add_agent(mem_agents.MemAgent_RO('KMC_4', 'KMC_0', 'MC_L_YC_HF_DEC_PRE'), block)
         self._add_agent(mem_agents.MemAgent_RO('KMC_7', 'KMC_1', 'MC_L_YC_LF_DEC_CUR'), block)
         self._add_agent(mem_agents.MemAgent_RO('KMC_6', 'KMC_1', 'MC_L_YC_LF_DEC_PRE'), block)
-
+        '''
+        
         block = self._add_block("MEMC_MC_R")
         self._add_agent(mem_agents.MemAgent_KMC_8(), block)
         self._add_agent(mem_agents.MemAgent_KMC_9(), block)
@@ -164,6 +166,11 @@ class MemManager:
 
         block = self._add_block('CPU')
         self._add_agent(mem_agents.MemAgent_CPU(), block)
+        '''
+
+    def reset_memory(self):
+        for agent in self._agent_list:
+            agent.reset_memory()
 
     def _add_block(self, block_name):
         block = MemBlock(block_name)
@@ -189,7 +196,7 @@ class MemManager:
         return None
 
     def _allocate_pre_located_memory(self):
-        for i in range(DDR_COUNT):
+        for i in range(GV.DDR_count):
             reg_dict = {}
             p_verbose('>>> Allicate pre-located memory in <DDR%s>' % (i + 1))
 
@@ -207,6 +214,7 @@ class MemManager:
                 reg_dict['%s_start_addr' % agent.name] = agent.start_addr
 
             # Process write agent with assigned previous agent
+            '''
             for agent in self._agent_list:
                 if agent.unused or agent.ddr_tag.value != i or agent.ddr_op == DDROp.R:
                     continue
@@ -215,13 +223,14 @@ class MemManager:
                 agent.allocate_memory(reg_dict)
                 if agent.allocated:
                     p_verbose("Subsequent %s" % agent.alloc_info)
+            '''
 
     def allocate_agent_memory(self):
         self._allocate_pre_located_memory()
 
         # Process agent with DDR tag but no start address
-        allocator_list = [MemAllocator(DDRTag(i)) for i in range(DDR_COUNT)]
-        for i in range(DDR_COUNT):
+        allocator_list = [MemAllocator(DDRTag(i)) for i in range(GV.DDR_count)]
+        for i in range(GV.DDR_count):
             p_verbose('>>> Allocate un-located agent in <DDR%s>' % (i + 1))
             allocator = allocator_list[i]
             for agent in self._agent_list:
@@ -232,8 +241,11 @@ class MemManager:
             reg_dict = {}
             for agent in allocator.unallocated_agents:
                 agent.allocate_memory(reg_dict)
-                reg_dict['%s_start_addr' % agent.name] = agent.start_addr
-                p_verbose("Allocate start_addr %s" % agent.alloc_info)
+                if not agent.allocated:
+                    p_warn('Allocate memory for %s(%.2f) on %s failed, no enought memeory' % (agent.name, agent.size, agent.ddr_tag.name))
+                else:
+                    reg_dict['%s_start_addr' % agent.name] = agent.start_addr
+                    p_verbose("Allocate start_addr %s" % agent.alloc_info)
 
         # Process agent without DDR
         for agent in self._agent_list:
@@ -242,10 +254,10 @@ class MemManager:
             if agent.allocated:
                 continue
             p_verbose('>>> Allocate un-tagged agent %s' % (agent.name))
-            for i in range(DDR_COUNT):
+            for i in range(GV.DDR_count):
                 allocator = allocator_list[i]
                 if allocator.allocate_memory(agent):
-                    p_warn('>>> Allocate un-tagged agent %s success at DDR%d - [0x%08X, 0x%08X]' % (agent.name, i + 1, agent.start_addr, agent.end_addr))
+                    p_verbose('>>> Allocate un-tagged agent %s success at DDR%d - [0x%08X, 0x%08X]' % (agent.name, i + 1, agent.start_addr, agent.end_addr))
                     break
 
         # process read only agent

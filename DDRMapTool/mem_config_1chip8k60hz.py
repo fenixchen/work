@@ -3,18 +3,18 @@ from mem_common import DDRTag
 from mem_global_var import GV
 
 
-class MemConfig_1Chip8K120Hz(MemConfig):
+class MemConfig_1Chip8K60Hz(MemConfig):
     # pylint: disable=invalid-name
     def __init__(self):
-        super().__init__("1Chip8K120Hz")
-        GV.mod_value('output_refresh_rate', 120)
-        GV.mod_value('MEMC_mode', 0)
+        super().__init__("1Chip8K60Hz")
+        GV.mod_value('output_refresh_rate', 60)
+        GV.mod_value('MEMC_mode', 1)
 
     def pre_place_memory(self):
         mm = self._mm
 
-        mm.get_agent('KMC_0').init_memory(DDRTag.DDR1)
-        mm.get_agent('KMC_1').init_memory(DDRTag.DDR1)
+        mm.get_agent('KMC_0').init_memory(DDRTag.DDR3)
+        mm.get_agent('KMC_1').init_memory(DDRTag.DDR3)
         '''
         mm.get_agent('KMC_8').init_memory(DDRTag.DDR4)
         mm.get_agent('KMC_9').init_memory(DDRTag.DDR4)
@@ -111,9 +111,9 @@ class MemConfig_1Chip8K120Hz(MemConfig):
 
 
 def main():
-    config = MemConfig_1Chip8K120Hz()
+    config = MemConfig_1Chip8K60Hz()
     mapping = config.place_memory()
-    config.print_mapping(mapping)
+    config.print_mapping(mapping, False)
     # config.print_registers(mapping)
 
 

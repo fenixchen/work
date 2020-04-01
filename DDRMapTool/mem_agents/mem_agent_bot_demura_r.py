@@ -1,7 +1,7 @@
 from mem_common import HEX2DEC, RegType, DEC2HEX, ROUNDUP, DDROp
 from mem_reg import MemReg
 from mem_agents.mem_agent import MemAgent
-from mem_global_var import *
+from mem_global_var import GV
 
 
 class MemAgent_BOT_DEMURA_R(MemAgent):
@@ -12,12 +12,12 @@ class MemAgent_BOT_DEMURA_R(MemAgent):
         self._reg_ptc_05_start_address0 = MemReg('reg_ptc_05_start_address0', 'reg_ptc_05_start_address0', RegType.START)
 
     def calc_memory(self):
-        BOT_DEMURA_R_frame_rate = BOT_Demura_framerate
-        BOT_DEMURA_R_bits = BOT_Demura_bits
-        BOT_DEMURA_R_H_res = BOT_Demura_Hact
-        BOT_DEMURA_R_V_res = BOT_Demura_Vtotal
-        BOT_DEMURA_R_VDE_res = BOT_Demura_Vact
-        BOT_DEMURA_R_CPR_ratio = BOT_Demura_CPR_ratio
+        BOT_DEMURA_R_frame_rate = GV.BOT_Demura_framerate
+        BOT_DEMURA_R_bits = GV.BOT_Demura_bits
+        BOT_DEMURA_R_H_res = GV.BOT_Demura_Hact
+        BOT_DEMURA_R_V_res = GV.BOT_Demura_Vtotal
+        BOT_DEMURA_R_VDE_res = GV.BOT_Demura_Vact
+        BOT_DEMURA_R_CPR_ratio = GV.BOT_Demura_CPR_ratio
         BOT_DEMURA_R_Bandwidth = BOT_DEMURA_R_frame_rate*BOT_DEMURA_R_bits*BOT_DEMURA_R_H_res*BOT_DEMURA_R_V_res/BOT_DEMURA_R_CPR_ratio/8/1000/1000
         BOT_DEMURA_R_DDR_size = 0
         return BOT_DEMURA_R_DDR_size, BOT_DEMURA_R_Bandwidth

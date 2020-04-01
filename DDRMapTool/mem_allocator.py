@@ -1,4 +1,5 @@
 from mem_common import *
+from mem_global_var import GV
 
 
 class MemAllocator():
@@ -32,8 +33,8 @@ class MemAllocator():
                 self._free_block_list.append([next_start, start_addr, start_addr - next_start])
             next_start = end_addr
 
-        if next_start < DDR_SIZE_BYTE:
-            self._free_block_list.append([next_start, DDR_SIZE_BYTE, DDR_SIZE_BYTE - next_start])
+        if next_start < GV.DDR_size_byte:
+            self._free_block_list.append([next_start, GV.DDR_size_byte, GV.DDR_size_byte - next_start])
 
         p_verbose(">>> Free Blocks")
         for free_block in self._free_block_list:
@@ -41,9 +42,7 @@ class MemAllocator():
 
         for agent in self._request_agent_list:
             p_verbose("Allocate %.2fM for agent(tagged:%s) <%s>" % (agent.size_m, agent.ddr_tag.name, agent.name))
-            if not self.allocate_memory(agent):
-                p_error("Allocate %.2fM failed for agent <%s>" % (agent.size_m, agent.name))
-                assert False
+            self.allocate_memory(agent)
 
     @staticmethod
     def _find_best_index(free_block_list, allocate_size):

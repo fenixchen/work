@@ -27,14 +27,14 @@ class MemAgent_KME_0(MemAgent):
         self._reg_kme_00_mode.value = 1
 
     def calc_memory(self):
-        KME_0_frame_rate = ME_in_framerate
-        KME_0_bits = ME_bits
-        KME_0_H_res = ME_Hact+ME_Hoverlap
-        KME_0_V_res = ME_Vtotal
-        KME_0_VDE_res = ME_Vact
-        KME_0_CPR_ratio = ME_CPR_ratio
+        KME_0_frame_rate = GV.ME_in_framerate
+        KME_0_bits = GV.ME_bits
+        KME_0_H_res = GV.ME_Hact+GV.ME_Hoverlap
+        KME_0_V_res = GV.ME_Vtotal
+        KME_0_VDE_res = GV.ME_Vact
+        KME_0_CPR_ratio = GV.ME_CPR_ratio
         KME_0_Bandwidth = KME_0_frame_rate*KME_0_bits*KME_0_H_res*KME_0_V_res/KME_0_CPR_ratio/8/1000/1000
-        KME_0_DDR_size = KME_0_bits*KME_0_H_res*KME_0_VDE_res/KME_0_CPR_ratio/8/1024/1024*ME_buff_num
+        KME_0_DDR_size = KME_0_bits*KME_0_H_res*KME_0_VDE_res/KME_0_CPR_ratio/8/1024/1024*GV.ME_buff_num
         return KME_0_DDR_size, KME_0_Bandwidth
 
     def allocate_memory(self, reg_dict):

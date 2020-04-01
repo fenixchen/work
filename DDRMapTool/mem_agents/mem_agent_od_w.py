@@ -13,12 +13,12 @@ class MemAgent_OD_W(MemAgent):
         self._reg_ptc_00_start_address1 = MemReg('reg_ptc_00_start_address1', 'reg_ptc_00_start_address1', RegType.START)
 
     def calc_memory(self):
-        OD_W_frame_rate = TOP_OD_framerate
-        OD_W_bits = TOP_OD_bits
-        OD_W_H_res = TOP_OD_Hact / 2
-        OD_W_V_res = TOP_OD_Vtotal
-        OD_W_VDE_res = TOP_OD_Vact
-        OD_W_CPR_ratio = TOP_OD_CPR_ratio
+        OD_W_frame_rate = GV.TOP_OD_framerate
+        OD_W_bits = GV.TOP_OD_bits
+        OD_W_H_res = GV.TOP_OD_Hact / 2
+        OD_W_V_res = GV.TOP_OD_Vtotal
+        OD_W_VDE_res = GV.TOP_OD_Vact
+        OD_W_CPR_ratio = GV.TOP_OD_CPR_ratio
         OD_W_Bandwidth = OD_W_frame_rate*OD_W_bits*OD_W_H_res*OD_W_V_res/OD_W_CPR_ratio/8/1000/1000
         OD_W_DDR_size = OD_W_bits*OD_W_H_res*OD_W_VDE_res/OD_W_CPR_ratio/8/1024/1024
         return OD_W_DDR_size, OD_W_Bandwidth

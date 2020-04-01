@@ -1,5 +1,6 @@
 import functools
 from mem_common import *
+from mem_global_var import GV
 
 
 @functools.total_ordering
@@ -8,29 +9,34 @@ class MemAgent:
         self._name = name
         self._module_name = module_name
         self._op = op
+        self._write_agent_name = write_agent_name  # for R agent to detect DDR tag
+        self._block = None
+        self._ddr_tag = None
+        self._start_addr = None
+        self._end_addr = None
+        self._mem_size = 0
+        self.reset_memory()
+
+    def reset_memory(self):
         self._ddr_tag = DDRTag.NONE
         mem_size, bandwidth = self.calc_memory()
-
-        if op == DDROp.R and bandwidth != 0:
-            assert write_agent_name is not None, "write_agent_name is None for non-empty read agent <%s>" % name
-
+        if self._op == DDROp.R and bandwidth != 0:
+            assert self._write_agent_name is not None, "write_agent_name is None for non-empty read agent <%s>" % self._name
         self._mem_size = int(mem_size * 1024 * 1024)
         self._bandwidth = int(bandwidth * 1024 * 1024)
         self._start_addr = None
         self._end_addr = None
-        self._block = None
-        self._write_agent_name = write_agent_name  # for R agent to detect DDR tag
 
     def __eq__(self, other):
         if not isinstance(other, MemAgent):
-            raise NotImplementedError()
+            return False
         self_start_addr = 0 if self._start_addr is None else self._start_addr
         other_start_addr = 0 if other._start_addr is None else other._start_addr
         return (self._ddr_tag.value, self_start_addr, self._name) == (other._ddr_tag.value, other_start_addr, other._name)
 
     def __lt__(self, other):
         if not isinstance(other, MemAgent):
-            raise NotImplementedError()
+            return False
         self_start_addr = 0 if self._start_addr is None else self._start_addr
         other_start_addr = 0 if other._start_addr is None else other._start_addr
         return (self._ddr_tag.value, self_start_addr, self._name) < (other._ddr_tag.value, other_start_addr, other._name)
@@ -49,7 +55,7 @@ class MemAgent:
     @property
     def ddr_base_offset(self):
         assert self._ddr_tag != DDRTag.NONE
-        return self._ddr_tag.value * DDR_SIZE_BYTE
+        return self._ddr_tag.value * GV.DDR_size_byte
 
     @property
     def debug_info(self):
@@ -99,6 +105,14 @@ class MemAgent:
     @property
     def start_addr(self):
         return self._start_addr
+
+    @property
+    def absolute_start_addr(self):
+        return self.ddr_base_offset + self._start_addr
+
+    @property
+    def absolute_end_addr(self):
+        return self.ddr_base_offset + self._end_addr
 
     def init_memory(self, ddr_tag, start_addr=None):
         """
@@ -175,7 +189,7 @@ class MemAgent:
             self._end_addr = end_addr
             new_size = self.end_addr - self.start_addr
             if new_size > self._mem_size:
-                p_warn("Increase <%s> memory from %.2fM to end_addr(0x%08X) - start_addr(0x%08X) = %.2fM" % (
+                p_verbose("Increase <%s> memory from %.2fM to end_addr(0x%08X) - start_addr(0x%08X) = %.2fM" % (
                     self._name, self.size_m, self.end_addr, self.start_addr, new_size / 1024.0 / 1024.0))
             self._mem_size = new_size
         if ddr_tag is not None:

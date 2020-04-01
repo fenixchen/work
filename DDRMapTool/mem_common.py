@@ -4,12 +4,6 @@ from enum import Enum
 import math
 import colorama
 
-DDR_SIZE = 256  # 256M DDR Size
-
-DDR_SIZE_BYTE = 256 * 1024 * 1024
-
-DDR_COUNT = 4
-
 DEBUG_ENABLE = True
 VERBOSE_ENABLE = False
 

@@ -15,14 +15,14 @@ class MemAgent_KMV_01(MemAgent):
         self._reg_mv01_mode = MemReg('reg_mv01_mode', 'reg_mv01_mode', RegType.OTHER)
 
     def calc_memory(self):
-        KMV_01_frame_rate = ME_out_framerate
+        KMV_01_frame_rate = GV.ME_out_framerate
         KMV_01_bits = 21
-        KMV_01_H_res = MC_H_Hact/ME1_block_size_H
-        KMV_01_V_res = MC_H_Vtotal/ME1_block_size_V
-        KMV_01_VDE_res = MC_H_Vact/ME1_block_size_V
-        KMV_01_CPR_ratio = ME_CPR_ratio
-        KMV_01_Bandwidth = KMV_01_frame_rate*KMV_01_bits*KMV_01_H_res*KMV_01_V_res/KMV_01_CPR_ratio/8/1000/1000*MEMC_en*IF(PC_mode, 0, 1)
-        KMV_01_DDR_size = KMV_01_bits*KMV_01_H_res*KMV_01_VDE_res/KMV_01_CPR_ratio/8/1024/1024*MEMC_en*IF(PC_mode, 0, 1)
+        KMV_01_H_res = GV.MC_H_Hact/GV.ME1_block_size_H
+        KMV_01_V_res = GV.MC_H_Vtotal/GV.ME1_block_size_V
+        KMV_01_VDE_res = GV.MC_H_Vact/GV.ME1_block_size_V
+        KMV_01_CPR_ratio = GV.ME_CPR_ratio
+        KMV_01_Bandwidth = KMV_01_frame_rate*KMV_01_bits*KMV_01_H_res*KMV_01_V_res/KMV_01_CPR_ratio/8/1000/1000*GV.MEMC_en*IF(GV.PC_mode, 0, 1)
+        KMV_01_DDR_size = KMV_01_bits*KMV_01_H_res*KMV_01_VDE_res/KMV_01_CPR_ratio/8/1024/1024*GV.MEMC_en*IF(GV.PC_mode, 0, 1)
         return KMV_01_DDR_size, KMV_01_Bandwidth
 
     def allocate_memory(self, reg_dict):
