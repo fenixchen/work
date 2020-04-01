@@ -15,10 +15,10 @@ class MemAgent:
         self._start_addr = None
         self._end_addr = None
         self._mem_size = 0
+        self._ddr_tag = DDRTag.NONE
         self.reset_memory()
 
     def reset_memory(self):
-        self._ddr_tag = DDRTag.NONE
         mem_size, bandwidth = self.calc_memory()
         if self._op == DDROp.R and bandwidth != 0:
             assert self._write_agent_name is not None, "write_agent_name is None for non-empty read agent <%s>" % self._name
@@ -30,15 +30,15 @@ class MemAgent:
     def __eq__(self, other):
         if not isinstance(other, MemAgent):
             return False
-        self_start_addr = 0 if self._start_addr is None else self._start_addr
-        other_start_addr = 0 if other._start_addr is None else other._start_addr
+        self_start_addr = 0xFFFFFFFF if self._start_addr is None else self._start_addr
+        other_start_addr = 0xFFFFFFFF if other._start_addr is None else other._start_addr
         return (self._ddr_tag.value, self_start_addr, self._name) == (other._ddr_tag.value, other_start_addr, other._name)
 
     def __lt__(self, other):
         if not isinstance(other, MemAgent):
             return False
-        self_start_addr = 0 if self._start_addr is None else self._start_addr
-        other_start_addr = 0 if other._start_addr is None else other._start_addr
+        self_start_addr = 0xFFFFFFFF if self._start_addr is None else self._start_addr
+        other_start_addr = 0xFFFFFFFF if other._start_addr is None else other._start_addr
         return (self._ddr_tag.value, self_start_addr, self._name) < (other._ddr_tag.value, other_start_addr, other._name)
 
     @property

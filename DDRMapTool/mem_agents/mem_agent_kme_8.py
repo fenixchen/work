@@ -42,10 +42,7 @@ class MemAgent_KME_8(MemAgent):
 
         KME_00_IPME = DEC2HEX(HEX2DEC(KME_00_LineOffset) * E8)
 
-        assert 'reg_kme_00_start_address7' in reg_dict
-        reg_kme_00_start_address7 = reg_dict['reg_kme_00_start_address7']
-
-        reg_kme_08_start_address0 = DEC2HEX(HEX2DEC(reg_kme_00_start_address7)+HEX2DEC(KME_00_IPME))
+        reg_kme_08_start_address0 = self.start_addr
         reg_kme_08_start_address1 = reg_kme_08_start_address0
         reg_kme_08_line_offset_addr = KME_08_LineOffset
         reg_kme_08_mode = 1
@@ -58,9 +55,6 @@ class MemAgent_KME_8(MemAgent):
         regs = [self._reg_kme_08_start_address0, self._reg_kme_08_start_address1]
         for reg in regs:
             reg.value += self.ddr_base_offset
-
-        reg_dict['reg_kme_08_start_address1'] = reg_kme_08_start_address1
-        reg_dict['KME_08_IP_LOGO'] = KME_08_IP_LOGO
 
         self.set_memory_range(reg_kme_08_start_address0, reg_kme_08_start_address0 + KME_08_IP_LOGO)
 

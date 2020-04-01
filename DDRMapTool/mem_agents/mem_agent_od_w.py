@@ -37,12 +37,10 @@ class MemAgent_OD_W(MemAgent):
         reg_ptc_00_start_address0 = self.start_addr
         reg_ptc_01_start_address0 = reg_ptc_00_start_address0
 
-        reg_dict['reg_ptc_00_start_address0'] = reg_ptc_00_start_address0
-
         self._reg_ptc_00_start_address0.value = reg_ptc_00_start_address0
         self._reg_ptc_00_start_address1.value = reg_ptc_01_start_address0
 
-        self.set_memory_range(self.start_addr, None)
+        self.set_memory_range(self.start_addr, self.start_addr + TOP_OD)
 
     @property
     def registers(self):

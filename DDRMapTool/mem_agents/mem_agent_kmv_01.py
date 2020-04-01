@@ -36,8 +36,6 @@ class MemAgent_KMV_01(MemAgent):
         Kmv01_Line_Offset = DEC2HEX(ROUNDUP(ROUNDUP(D15*C15/F15, 0)/128, 0)*128/8)
         KMV_00_MV = DEC2HEX((HEX2DEC(Kmv01_Line_Offset) * E15))
 
-        reg_dict['KMV_00_MV'] = KMV_00_MV
-
         reg_mv01_start_address0 = self.start_addr
         reg_mv01_end_address0 = DEC2HEX(HEX2DEC(reg_mv01_start_address0)+HEX2DEC(Kmv01_Line_Offset) * ROW_NUM2)
         reg_mv01_line_offset_addr = Kmv01_Line_Offset
@@ -52,7 +50,7 @@ class MemAgent_KMV_01(MemAgent):
         for reg in regs:
             reg.value += self.ddr_base_offset
 
-        self.set_memory_range(reg_mv01_start_address0, reg_mv01_end_address0)
+        self.set_memory_range(reg_mv01_start_address0, reg_mv01_start_address0 + KMV_00_MV)
 
     @property
     def registers(self):

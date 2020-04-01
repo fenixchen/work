@@ -40,13 +40,10 @@ class MemAgent_KMV_04(MemAgent):
         KMV_04_Line_Offset = DEC2HEX(ROUNDUP(ROUNDUP(D17*C17/F17, 0)/128, 0)*128/8)
         KMV_04_MV = DEC2HEX((HEX2DEC(KMV_04_Line_Offset) * E17))
         reg_dict['KMV_04_MV'] = KMV_04_MV
-        reg_mv02_start_address0 = reg_dict['reg_mv02_start_address0']
-        KMV_02_MV = reg_dict['KMV_02_MV']
 
-        reg_mv04_start_address0 = DEC2HEX(HEX2DEC(reg_mv02_start_address0)+HEX2DEC(KMV_02_MV))
+        reg_mv04_start_address0 = self.start_addr
         reg_mv04_start_address1 = DEC2HEX(HEX2DEC(reg_mv04_start_address0)+HEX2DEC(KMV_04_MV))
         reg_mv04_start_address2 = DEC2HEX(HEX2DEC(reg_mv04_start_address1)+HEX2DEC(KMV_04_MV))
-        reg_dict['reg_mv04_start_address2'] = reg_mv04_start_address2
 
         reg_mv04_end_address0 = DEC2HEX(HEX2DEC(reg_mv04_start_address0)+HEX2DEC(KMV_04_Line_Offset)*ROW_NUM)
         reg_mv04_end_address1 = DEC2HEX(HEX2DEC(reg_mv04_start_address1)+HEX2DEC(KMV_04_Line_Offset)*ROW_NUM)
@@ -72,7 +69,7 @@ class MemAgent_KMV_04(MemAgent):
         for reg in regs:
             reg.value += self.ddr_base_offset
 
-        self.set_memory_range(reg_mv04_start_address0, reg_mv04_end_address2)
+        self.set_memory_range(reg_mv04_start_address0, reg_mv04_start_address2 + KMV_04_MV)
 
     @property
     def registers(self):

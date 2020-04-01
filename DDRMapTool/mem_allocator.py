@@ -58,11 +58,13 @@ class MemAllocator():
     def allocate_memory(self, agent):
         best_index = self._find_best_index(self._free_block_list, agent.size)
         if best_index == -1:
-            p_warn("Allocate %.2fM failed for agent <%s>" % (agent.size_m, agent.name))
+            p_error("Allocate %.2fM failed for agent <%s>" % (agent.size_m, agent.name))
+            for i, free_block in enumerate(self._free_block_list):
+                p_error('free_block[%d] [0x%08X - 0x%08X] %.2fM' % (i, free_block[0], free_block[1], free_block[2] / 1024.0 / 1024.0))
             return False
         else:
             agent.set_memory_range(self._free_block_list[best_index][0], None, self._ddr_tag)
-            p_verbose("Allocate %.2fM success for agent <%s> at 0x%08X" % (agent.size_m, agent.name, agent.start_addr))
+            p_debug("Allocate %.2fM success for agent <%s> at 0x%08X" % (agent.size_m, agent.name, agent.start_addr))
             self._free_block_list[best_index][0] += agent.size
             self._free_block_list[best_index][2] -= agent.size
             return True

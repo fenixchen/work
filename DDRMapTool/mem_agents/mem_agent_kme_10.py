@@ -34,16 +34,10 @@ class MemAgent_KME_10(MemAgent):
         F12 = 1  # CPR ratio
         KME_10_LineOffset = DEC2HEX(ROUNDUP(ROUNDUP(D12*C12/F12, 0)/128, 0)*128/8)
         KME_10_LOGO_MASK = DEC2HEX((HEX2DEC(KME_10_LineOffset) * E12))
-        reg_dict['KME_10_LOGO_MASK'] = KME_10_LOGO_MASK
 
-        reg_kme_08_start_address1 = reg_dict['reg_kme_08_start_address1']
-        KME_08_IP_LOGO = reg_dict['KME_08_IP_LOGO']
-
-        reg_kme_10_start_address0 = DEC2HEX(HEX2DEC(reg_kme_08_start_address1)+HEX2DEC(KME_08_IP_LOGO))
+        reg_kme_10_start_address0 = self.start_addr
 
         reg_kme_10_start_address1 = reg_kme_10_start_address0
-        reg_dict['reg_kme_10_start_address1'] = reg_kme_10_start_address1
-
         reg_kme_10_line_offset_addr = KME_10_LineOffset
         reg_kme_10_mode = 1
 

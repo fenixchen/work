@@ -139,12 +139,20 @@ class MemFrameConfig(tk.Frame):
                     if agent.block_name != last_block_name:
                         color_tag = 'color1' if color_tag == 'color2' else 'color2'
                         last_block_name = agent.block_name
-                    iid = table.insert('', 'end', text=agent.name, values=(
-                        str(number), agent.name, agent.op_str, agent.ddr_tag.name, agent.block_name,
-                        '0x%08X' % agent.start_addr,
-                        '0x%08X' % agent.end_addr,
-                        '%.2fM' % agent.size_m,
-                        '%.2fM' % agent.bandwidth_m), tags=[color_tag])
+                    if agent.allocated:
+                        iid = table.insert('', 'end', text=agent.name, values=(
+                            str(number), agent.name, agent.op_str, agent.ddr_tag.name, agent.block_name,
+                            '0x%08X' % agent.start_addr,
+                            '0x%08X' % agent.end_addr,
+                            '%.2fM' % agent.size_m,
+                            '%.2fM' % agent.bandwidth_m), tags=[color_tag])
+                    else:
+                        iid = table.insert('', 'end', text=agent.name, values=(
+                            str(number), agent.name, agent.op_str, agent.ddr_tag.name, agent.block_name,
+                            '',
+                            '',
+                            '%.2fM' % agent.size_m,
+                            '%.2fM' % agent.bandwidth_m), tags=[color_tag])
                     number += 1
                     self._agent_item_list.append(iid)
                 elif agent.ddr_op == DDROp.R and show_read_agent:
@@ -185,7 +193,7 @@ class MemFrameConfig(tk.Frame):
             if not bbox:
                 continue
             agent = self._config.get_agent(self._table_agent.item(agent_item)['text'])
-            if agent.ddr_op == DDROp.R:
+            if agent.ddr_op == DDROp.R or not agent.allocated:
                 continue
             left = DRAW_PADDING
             top = bbox[1] + 2

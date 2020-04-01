@@ -15,7 +15,7 @@ class MemConfig_1Chip8K60Hz(MemConfig):
 
         mm.get_agent('KMC_0').init_memory(DDRTag.DDR3)
         mm.get_agent('KMC_1').init_memory(DDRTag.DDR3)
-        '''
+
         mm.get_agent('KMC_8').init_memory(DDRTag.DDR4)
         mm.get_agent('KMC_9').init_memory(DDRTag.DDR4)
 
@@ -107,7 +107,6 @@ class MemConfig_1Chip8K60Hz(MemConfig):
         mm.get_agent('LDR_R4').init_memory(DDRTag.DDR1)
 
         mm.get_agent('CPU').init_memory(DDRTag.DDR4)
-        '''
 
 
 def main():

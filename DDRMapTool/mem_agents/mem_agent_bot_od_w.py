@@ -35,15 +35,11 @@ class MemAgent_BOT_OD_W(MemAgent):
         G21 = DEC2HEX(ROUNDUP(ROUNDUP(D21*C21/F21, 0)/128, 0)*128/8)
         TOP_OD = DEC2HEX((HEX2DEC(G21) * E21))
 
-        TOP_DEMURA = reg_dict['TOP_DEMURA']
-        reg_ptc_04_start_address0 = reg_dict['reg_ptc_04_start_address0']
-
-        reg_kod_wdma_00_start_address0 = DEC2HEX(HEX2DEC(reg_ptc_04_start_address0)+HEX2DEC(TOP_DEMURA))
+        reg_kod_wdma_00_start_address0 = self._start_addr
 
         reg_kod_wdma_00_start_address1 = reg_kod_wdma_00_start_address0
         reg_kod_wdma_00_start_address2 = reg_kod_wdma_00_start_address0
         reg_kod_wdma_00_start_address3 = reg_kod_wdma_00_start_address0
-        reg_dict['reg_kod_wdma_00_start_address3'] = reg_kod_wdma_00_start_address3
 
         self._reg_kod_wdma_00_start_address0.value = reg_kod_wdma_00_start_address0
         self._reg_kod_wdma_00_start_address1.value = reg_kod_wdma_00_start_address1

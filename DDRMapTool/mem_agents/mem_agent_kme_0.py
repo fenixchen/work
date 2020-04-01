@@ -105,10 +105,7 @@ class MemAgent_KME_0(MemAgent):
         for reg in regs:
             reg.value += self.ddr_base_offset
 
-        # save address for KME_08
-        reg_dict['reg_kme_00_start_address7'] = reg_kme_00_start_address7
-
-        self.set_memory_range(reg_kme_00_start_address0, reg_kme_00_end_address7)
+        self.set_memory_range(reg_kme_00_start_address0, reg_kme_00_start_address7 + KME_00_IPME)
 
     @property
     def registers(self):

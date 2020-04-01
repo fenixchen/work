@@ -36,17 +36,12 @@ class MemAgent_KME_12(MemAgent):
         F13 = 1  # CPR ratio
         KME_12_LineOffset = DEC2HEX(ROUNDUP(ROUNDUP(D13*C13/F13, 0)/128, 0)*128/8)
         KME_12_Pixel_LOGO = DEC2HEX((HEX2DEC(KME_12_LineOffset) * E13))
-        reg_dict['KME_12_Pixel_LOGO'] = KME_12_Pixel_LOGO
 
         LOGO_VACT = 1080
 
-        KME_10_LOGO_MASK = reg_dict['KME_10_LOGO_MASK']
-        reg_kme_10_start_address1 = reg_dict['reg_kme_10_start_address1']
-
-        reg_kme_12_start_address0 = DEC2HEX(HEX2DEC(reg_kme_10_start_address1)+HEX2DEC(KME_10_LOGO_MASK))
+        reg_kme_12_start_address0 = self.start_addr
 
         reg_kme_12_start_address1 = reg_kme_12_start_address0
-        reg_dict['reg_kme_12_start_address1'] = reg_kme_12_start_address1
 
         reg_kme_12_end_address0 = DEC2HEX(HEX2DEC(reg_kme_12_start_address0)+HEX2DEC(KME_12_LineOffset)*LOGO_VACT)
         reg_kme_12_end_address1 = reg_kme_12_end_address0
@@ -68,7 +63,7 @@ class MemAgent_KME_12(MemAgent):
         for reg in regs:
             reg.value += self.ddr_base_offset
 
-        self.set_memory_range(reg_kme_12_start_address0, reg_kme_12_end_address1)
+        self.set_memory_range(reg_kme_12_start_address0, reg_kme_12_start_address1 + KME_12_Pixel_LOGO)
 
     @property
     def registers(self):

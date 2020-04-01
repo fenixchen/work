@@ -32,10 +32,7 @@ class MemAgent_BOT_DEMURA_R(MemAgent):
         G23 = DEC2HEX(ROUNDUP(ROUNDUP(D23*C23/F23, 0)/128, 0)*128/8)
         BOT_DEMURA = DEC2HEX((HEX2DEC(G23) * E23))
 
-        reg_kod_wdma_00_start_address3 = reg_dict['reg_kod_wdma_00_start_address3']
-        TOP_OD = reg_dict['TOP_OD']
-
-        reg_ptc_05_start_address0 = DEC2HEX(HEX2DEC(reg_kod_wdma_00_start_address3)+HEX2DEC(TOP_OD))
+        reg_ptc_05_start_address0 = self.start_addr
 
         self._reg_ptc_05_start_address0.value = reg_ptc_05_start_address0
 

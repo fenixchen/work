@@ -105,14 +105,11 @@ class MemAgent_KMC_8(MemAgent):
         self._reg_kmc_08_mode.value = reg_kmc_08_mode
 
         # save address for KMC_09
-        reg_dict['reg_kmc_08_start_address7'] = reg_kmc_08_start_address7
-        reg_dict['kmc_08_MC_HF_VD_CPR'] = kmc_08_MC_HF_VD_CPR
-
         regs = self._reg_kmc_08_start_address + self._reg_kmc_08_end_address
         for reg in regs:
             reg.value += self.ddr_base_offset
 
-        self.set_memory_range(self.start_addr, self.end_addr)
+        self.set_memory_range(reg_kmc_08_start_address0, reg_kmc_08_start_address7 + kmc_08_MC_HF_VD_CPR)
 
     @property
     def registers(self):

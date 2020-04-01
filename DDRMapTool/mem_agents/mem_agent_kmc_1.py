@@ -63,10 +63,7 @@ class MemAgent_KMC_1(MemAgent):
         KMC_01_LineOffset_VD = DEC2HEX(ROUNDUP(ROUNDUP(D7 * C7 / F7, 0) / 128, 0)*128/8)
         KMC_01_MC_LF_VD_CPR = DEC2HEX((HEX2DEC(KMC_01_LineOffset_VD) * E7))
 
-        reg_kmc_00_start_address7 = reg_dict['reg_kmc_00_start_address7']
-        KMC_00_MC_HF_VD_CPR = reg_dict['KMC_00_MC_HF_VD_CPR']
-
-        reg_kmc_01_start_address0 = DEC2HEX(HEX2DEC(reg_kmc_00_start_address7) + HEX2DEC(KMC_00_MC_HF_VD_CPR))
+        reg_kmc_01_start_address0 = self.start_addr
         reg_kmc_01_start_address1 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address0) + HEX2DEC(KMC_01_MC_LF_VD_CPR))
         reg_kmc_01_start_address2 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address1) + HEX2DEC(KMC_01_MC_LF_VD_CPR))
         reg_kmc_01_start_address3 = DEC2HEX(HEX2DEC(reg_kmc_01_start_address2) + HEX2DEC(KMC_01_MC_LF_VD_CPR))

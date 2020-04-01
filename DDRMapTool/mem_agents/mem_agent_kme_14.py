@@ -36,10 +36,7 @@ class MemAgent_KME_14(MemAgent):
         KME_14_LineOffset = DEC2HEX(ROUNDUP(ROUNDUP(D14*C14/F14, 0)/128, 0)*128/8)
         KME_14_HOG_history = DEC2HEX((HEX2DEC(KME_14_LineOffset) * E14))
 
-        reg_kme_12_start_address1 = reg_dict['reg_kme_12_start_address1']
-        KME_12_Pixel_LOGO = reg_dict['KME_12_Pixel_LOGO']
-
-        reg_kme_14_start_address0 = DEC2HEX(HEX2DEC(reg_kme_12_start_address1)+HEX2DEC(KME_12_Pixel_LOGO))
+        reg_kme_14_start_address0 = self.start_addr
 
         reg_kme_14_start_address1 = reg_kme_14_start_address0
         reg_kme_14_line_offset_addr = KME_14_LineOffset

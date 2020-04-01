@@ -14,7 +14,7 @@ def p_verbose(*args, **kwargs):
     if VERBOSE_ENABLE:
         caller = inspect.getframeinfo(inspect.stack()[1][0])
         print(colorama.Style.DIM, end='')
-        print("[V][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
+        print("[V][%s:%3d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
         print(*args, **kwargs)
         print(colorama.Style.RESET_ALL, end='')
 
@@ -23,7 +23,7 @@ def p_debug(*args, **kwargs):
     if DEBUG_ENABLE:
         caller = inspect.getframeinfo(inspect.stack()[1][0])
         print(colorama.Fore.GREEN, end='')
-        print("[D][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
+        print("[D][%s:%3d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
         print(*args, **kwargs)
         print(colorama.Style.RESET_ALL, end='')
 
@@ -31,7 +31,7 @@ def p_debug(*args, **kwargs):
 def p_warn(*args, **kwargs):
     caller = inspect.getframeinfo(inspect.stack()[1][0])
     print(colorama.Fore.YELLOW, end='')
-    print("[E][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
+    print("[E][%s:%3d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
     print(*args, **kwargs)
     print(colorama.Style.RESET_ALL, end='')
 
@@ -39,7 +39,7 @@ def p_warn(*args, **kwargs):
 def p_error(*args, **kwargs):
     caller = inspect.getframeinfo(inspect.stack()[1][0])
     print(colorama.Fore.RED, end='')
-    print("[E][%s:%d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
+    print("[E][%s:%3d] - " % (os.path.basename(caller.filename), caller.lineno), end='')
     print(*args, **kwargs)
     print(colorama.Style.RESET_ALL, end='')
 
