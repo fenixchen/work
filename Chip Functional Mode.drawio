@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-10-21T07:13:14.281Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="SHFKHYb0wphQLjD7R1AE" version="15.5.7" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2021-10-21T07:21:50.796Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="5KpW9oUFKNqd777QV9eW" version="15.5.7" type="github" pages="3">
   <diagram name="工作模式" id="58cdce13-f638-feb5-8d6f-7d28b1aa9fa0">
-    <mxGraphModel dx="1422" dy="905" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -72,8 +72,8 @@
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-1" value="短接PIN跳过存储模式" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;strokeColor=#b85450;fillColor=#f8cecc;fontStyle=1" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1" source="cx5vDDZwlb0DhUHUJvox-20" target="cx5vDDZwlb0DhUHUJvox-28">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="-770" y="104" />
-              <mxPoint x="-770" y="277" />
+              <mxPoint x="-820" y="104" />
+              <mxPoint x="-820" y="277" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -85,8 +85,8 @@
             <mxPoint x="-625" y="249" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="cx5vDDZwlb0DhUHUJvox-22" value="检测到霍尔传感器电压&lt;b&gt;&lt;font color=&quot;#ff3333&quot;&gt;下跳沿&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
-          <mxGeometry x="-685" y="159" width="120" height="40" as="geometry" />
+        <mxCell id="cx5vDDZwlb0DhUHUJvox-22" value="检测到霍尔传感器电压&lt;br&gt;&lt;b&gt;&lt;font color=&quot;#ff3333&quot;&gt;下跳沿+(50-100us)低电平+上跳沿&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry x="-740" y="159" width="230" height="40" as="geometry" />
         </mxCell>
         <mxCell id="cx5vDDZwlb0DhUHUJvox-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=20;strokeColor=#b85450;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1" source="cx5vDDZwlb0DhUHUJvox-28" target="cx5vDDZwlb0DhUHUJvox-30">
           <mxGeometry relative="1" as="geometry" />
@@ -203,6 +203,39 @@
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-18" value="监测红外命令" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
           <mxGeometry x="40" y="99" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-1" value="" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#FFF2CC;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-340" y="280" as="sourcePoint" />
+            <mxPoint x="-370" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-2" value="" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#FFF2CC;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-220" y="280" as="sourcePoint" />
+            <mxPoint x="-200" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-3" value="50 - 100us" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#000000;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-220" y="279" as="sourcePoint" />
+            <mxPoint x="-340" y="279" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-5" value="" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#FFF2CC;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-370" y="220" as="sourcePoint" />
+            <mxPoint x="-430" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-6" value="" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#FFF2CC;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-140" y="220" as="sourcePoint" />
+            <mxPoint x="-200" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pCAs06Tc3xVGHk5eASE8-7" value="存储模式唤醒波形" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;fontSize=12;fontColor=#000000;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+          <mxGeometry x="-340" y="189" width="110" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
