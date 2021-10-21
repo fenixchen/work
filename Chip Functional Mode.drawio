@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-21T07:42:11.150Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="TNEIjMCkt1iq4mzaRxFS" version="15.5.7" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2021-10-21T07:44:35.901Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="38QzB3Q16Zs4QQJvsgxk" version="15.5.7" type="github" pages="3">
   <diagram name="工作模式" id="58cdce13-f638-feb5-8d6f-7d28b1aa9fa0">
     <mxGraphModel dx="1422" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
@@ -133,21 +133,21 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-10" value="写进入存储模式标志寄存器" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
-          <mxGeometry x="45" y="429" width="120" height="60" as="geometry" />
+          <mxGeometry x="41" y="429" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85450;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1" source="XZ-uSYsyCtThvAbO2ajT-14" target="XZ-uSYsyCtThvAbO2ajT-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-14" value="模拟部分检测到标志后， 关闭LDOx2" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
-          <mxGeometry x="45" y="530" width="120" height="60" as="geometry" />
+          <mxGeometry x="41" y="550" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-15" value="进入存储模式" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#f8cecc;gradientColor=#ea6b66;strokeColor=#b85450;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
-          <mxGeometry x="45" y="660" width="120" height="60" as="geometry" />
+          <mxGeometry x="41" y="660" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="XZ-uSYsyCtThvAbO2ajT-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;strokeColor=#b85450;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1" source="XZ-uSYsyCtThvAbO2ajT-18" target="XZ-uSYsyCtThvAbO2ajT-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="XZ-uSYsyCtThvAbO2ajT-18" value="监测红外命令" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
+        <mxCell id="XZ-uSYsyCtThvAbO2ajT-18" value="检测红外命令" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="HgDbxuw-brQuRfdEXAu3-1">
           <mxGeometry x="40" y="99" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="pCAs06Tc3xVGHk5eASE8-1" value="" style="endArrow=none;html=1;rounded=0;fontSize=12;fontColor=#FFF2CC;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1">
@@ -209,6 +209,9 @@
             <mxPoint x="-500" y="169" as="sourcePoint" />
             <mxPoint x="-450" y="119" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="sFgSZHZ6oJ60pa1g6--3-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;fontSize=12;fontColor=#000000;strokeColor=#000000;strokeWidth=1;fillColor=#f8cecc;" edge="1" parent="HgDbxuw-brQuRfdEXAu3-1" source="XZ-uSYsyCtThvAbO2ajT-18" target="XZ-uSYsyCtThvAbO2ajT-18">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
