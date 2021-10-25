@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-25T08:51:35.068Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="gCrJ1Tdn6APX5Ha0-1PC" version="15.5.8" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2021-10-25T09:03:27.949Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="ikF2MjgJc4h1jCUZbLxY" version="15.5.8" type="github" pages="4">
   <diagram name="工作模式" id="58cdce13-f638-feb5-8d6f-7d28b1aa9fa0">
     <mxGraphModel dx="782" dy="553" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
@@ -62,7 +62,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="RbMUWHjGIcH0OyGUc8dW" name="存储模式">
-    <mxGraphModel dx="2591" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2591" dy="716" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="HgDbxuw-brQuRfdEXAu3-0" />
         <mxCell id="HgDbxuw-brQuRfdEXAu3-1" parent="HgDbxuw-brQuRfdEXAu3-0" />
@@ -503,6 +503,15 @@
             <mxPoint x="930" y="550" as="sourcePoint" />
             <mxPoint x="840" y="827" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="4F1jqszyM3tdzVmzp2UN-0" value="AON Domain" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;strokeColor=#36393d;fillColor=#ffff88;" vertex="1" parent="lym-RKdIxH6LB7uM-Mkp-1">
+          <mxGeometry x="-90" y="414" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4F1jqszyM3tdzVmzp2UN-1" value="Analog Domain(Alway ON)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;strokeColor=#001DBC;fillColor=#6666FF;fontColor=#ffffff;" vertex="1" parent="lym-RKdIxH6LB7uM-Mkp-1">
+          <mxGeometry x="-90" y="486" width="210" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="4F1jqszyM3tdzVmzp2UN-2" value="Power Off Domain" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;strokeColor=#314354;fillColor=#647687;fontColor=#ffffff;" vertex="1" parent="lym-RKdIxH6LB7uM-Mkp-1">
+          <mxGeometry x="-90" y="570" width="210" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
